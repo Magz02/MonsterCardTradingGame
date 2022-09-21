@@ -1,0 +1,2 @@
+# MonsterCardTradingGame
+SWEN Semesterprojekt
