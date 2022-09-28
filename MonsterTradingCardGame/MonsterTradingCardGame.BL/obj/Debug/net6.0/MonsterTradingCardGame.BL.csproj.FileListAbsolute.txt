@@ -1,0 +1,15 @@
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\bin\Debug\net6.0\MonsterTradingCardGame.BL.deps.json
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\bin\Debug\net6.0\MonsterTradingCardGame.BL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\bin\Debug\net6.0\MonsterTradingCardGame.BL.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\bin\Debug\net6.0\MonsterTradingCardGame.Model.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\bin\Debug\net6.0\MonsterTradingCardGame.Model.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.csproj.AssemblyReference.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.AssemblyInfoInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.AssemblyInfo.cs
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.csproj.CoreCompileInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.csproj.CopyComplete
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\refint\MonsterTradingCardGame.BL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\MonsterTradingCardGame.BL.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.BL\obj\Debug\net6.0\ref\MonsterTradingCardGame.BL.dll

@@ -1,0 +1,112 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "MonsterTradingCardGame.BL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "MonsterTradingCardGame.Model": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/MonsterTradingCardGame.BL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MonsterTradingCardGame.BL.dll": {}
+        }
+      },
+      "MonsterTradingCardGame.Model/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/MonsterTradingCardGame.Model.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MonsterTradingCardGame.Model.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MonsterTradingCardGame.BL/1.0.0": {
+      "type": "project",
+      "path": "../MonsterTradingCardGame.BL/MonsterTradingCardGame.BL.csproj",
+      "msbuildProject": "../MonsterTradingCardGame.BL/MonsterTradingCardGame.BL.csproj"
+    },
+    "MonsterTradingCardGame.Model/1.0.0": {
+      "type": "project",
+      "path": "../MonsterTradingCardGame.Model/MonsterTradingCardGame.Model.csproj",
+      "msbuildProject": "../MonsterTradingCardGame.Model/MonsterTradingCardGame.Model.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "MonsterTradingCardGame.BL >= 1.0.0",
+      "MonsterTradingCardGame.Model >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\ormak\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame\\MonsterTradingCardGame.csproj",
+      "projectName": "MonsterTradingCardGame",
+      "projectPath": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame\\MonsterTradingCardGame.csproj",
+      "packagesPath": "C:\\Users\\ormak\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\ormak\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame.BL\\MonsterTradingCardGame.BL.csproj": {
+              "projectPath": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame.BL\\MonsterTradingCardGame.BL.csproj"
+            },
+            "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame.Model\\MonsterTradingCardGame.Model.csproj": {
+              "projectPath": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame.Model\\MonsterTradingCardGame.Model.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

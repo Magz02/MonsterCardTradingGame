@@ -1,0 +1,5 @@
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.csproj.AssemblyReference.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.AssemblyInfoInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.AssemblyInfo.cs
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.csproj.CoreCompileInputs.cache

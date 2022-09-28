@@ -1,0 +1,12 @@
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\bin\Debug\net6.0\MonsterTradingCardGame.Model.deps.json
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\bin\Debug\net6.0\MonsterTradingCardGame.Model.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\bin\Debug\net6.0\MonsterTradingCardGame.Model.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.csproj.AssemblyReference.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.AssemblyInfoInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.AssemblyInfo.cs
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.csproj.CoreCompileInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\refint\MonsterTradingCardGame.Model.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\MonsterTradingCardGame.Model.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.Model\obj\Debug\net6.0\ref\MonsterTradingCardGame.Model.dll
