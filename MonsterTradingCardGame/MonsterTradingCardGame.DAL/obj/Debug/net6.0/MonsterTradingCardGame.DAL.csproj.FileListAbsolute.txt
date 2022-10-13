@@ -1,0 +1,12 @@
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\bin\Debug\net6.0\MonsterTradingCardGame.DAL.deps.json
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\bin\Debug\net6.0\MonsterTradingCardGame.DAL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\bin\Debug\net6.0\MonsterTradingCardGame.DAL.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.csproj.AssemblyReference.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.AssemblyInfoInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.AssemblyInfo.cs
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.csproj.CoreCompileInputs.cache
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\refint\MonsterTradingCardGame.DAL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\ref\MonsterTradingCardGame.DAL.dll
