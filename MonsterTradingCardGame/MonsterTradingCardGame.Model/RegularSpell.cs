@@ -5,13 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.Model {
-    public class Deck {
-        // ctor
-        public Deck() {
-            
-        }
+    public class RegularSpell : Card {
+        //ctor
+        public RegularSpell() : base("Regular Spell", 1, 0, 10) {
 
-        // fields
-        private List<Card> deck = new List<Card>();
+        }
     }
 }

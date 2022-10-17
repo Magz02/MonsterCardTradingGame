@@ -5,13 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.Model {
-    public class Deck {
-        // ctor
-        public Deck() {
-            
-        }
+    public class FireTroll : Card {
+        //ctor
+        public FireTroll() : base("Fire Troll", 0, 1, 15) {
 
-        // fields
-        private List<Card> deck = new List<Card>();
+        }
     }
 }

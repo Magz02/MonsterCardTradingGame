@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.Model {
-    internal class SpellCard {
+    public class Kraken : Card {
+        // ctor
+        public Kraken() : base("Kraken", 0, 2, 35) {
+
+        }
     }
 }

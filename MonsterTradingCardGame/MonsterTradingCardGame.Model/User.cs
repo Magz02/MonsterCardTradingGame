@@ -9,7 +9,9 @@
         // fields
         string name = "";
         string password = "";
-        Deck deck = new Deck();
+        int coins = 20;
+        Deck allCards = new Deck();
+        Deck battleDeck = new Deck();
 
         // properties
         public string Name {

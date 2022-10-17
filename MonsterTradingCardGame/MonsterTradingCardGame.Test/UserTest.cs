@@ -6,10 +6,14 @@ namespace MonsterTradingCardGame.Test {
         public void Setup() {
         }
 
+        /***
+          
         [Test]
         public void Test1() {
             Assert.Pass();
         }
+        
+        ***/
 
         //checks if user is created correctly
         [Test]

@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.Model {
-    internal class MonsterCard {
+    public class WaterGoblin : Card {
+        //ctor
+        public WaterGoblin() : base("Water Goblin", 0, 2, 10) {
+        
+        }
     }
 }

@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.Model {
-    internal interface ICard {
+    public class FireSpell : Card {
+        // ctor
+        public FireSpell() : base("Fire Spell", 1, 1, 10) {
+
+        }
     }
 }
