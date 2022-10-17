@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "MonsterTradingCardGame/1.0.0": {
+        "dependencies": {
+          "MonsterTradingCardGame.BL": "1.0.0",
+          "MonsterTradingCardGame.Model": "1.0.0"
+        },
+        "runtime": {
+          "MonsterTradingCardGame.dll": {}
+        }
+      },
+      "MonsterTradingCardGame.BL/1.0.0": {
+        "dependencies": {
+          "MonsterTradingCardGame.Model": "1.0.0"
+        },
+        "runtime": {
+          "MonsterTradingCardGame.BL.dll": {}
+        }
+      },
+      "MonsterTradingCardGame.Model/1.0.0": {
+        "runtime": {
+          "MonsterTradingCardGame.Model.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MonsterTradingCardGame/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MonsterTradingCardGame.BL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MonsterTradingCardGame.Model/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
