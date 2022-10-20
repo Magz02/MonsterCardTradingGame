@@ -23,5 +23,23 @@
             get => password;
             set => password = value;
         }
+
+        public static bool Login(string? username, string? password) {
+            //throw new NotImplementedException();
+
+            if (username == "Test" && password == "1234") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public static bool Register(string username, string password) {
+            throw new NotImplementedException();
+        }
+
+        public static User LoginSuccess(string username, string password) {
+            return new User(username, password);
+        }
     }
 }

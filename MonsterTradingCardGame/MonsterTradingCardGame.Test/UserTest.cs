@@ -22,5 +22,7 @@ namespace MonsterTradingCardGame.Test {
             Assert.That(user.Name, Is.EqualTo("Rudolf"));
             Assert.That(user.Password, Is.EqualTo("1234"));
         }
+
+        
     }
 }
