@@ -1,4 +1,4 @@
-﻿using MonsterTradingCardGame.Model;
+﻿using MonsterTradingCardGame.Model.Cards;
 
 namespace MonsterTradingCardGame.Test {
     public class CardTest {

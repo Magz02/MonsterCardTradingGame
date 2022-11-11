@@ -2,8 +2,25 @@
 using MonsterTradingCardGame.Model;
 
 namespace MonsterTradingCardGame {
-    internal class Program {
+    public class Program {
         public static void Main(string[] args) {
+            GameHandler handler = new GameHandler();
+            handler.run();
+
+
+
+
+
+
+
+
+
+
+
+
+            /*GameHandler handler = new GameHandler();
+            Thread handlerThread = new Thread(handler.run);
+            handlerThread.Start();
             User currentUser;
             char choice;
             Console.WriteLine("Hello. Please login or register");
@@ -22,7 +39,8 @@ namespace MonsterTradingCardGame {
                         if (success) {
                             Console.WriteLine("Login successful");
                             currentUser = User.LoginSuccess(username, password);
-                            Console.WriteLine($"Welcome {currentUser.Name}!");
+                            //TODO: Handler login anstatt login in User
+                            Console.WriteLine($"Welcome {currentUser.Username}!");
                             success = true;
                         } else {
                             Console.WriteLine("Login failed ,try again");
@@ -54,7 +72,7 @@ namespace MonsterTradingCardGame {
             // var player1 = new User("Rudolf", "1234");
             // var player2 = new User("Susanne", "anna999");
             // var gameHandler = new GameHandler();
-            //gameHandler.PerformBattle(player1);
+            //gameHandler.PerformBattle(player1);*/
         }
     }
 }
