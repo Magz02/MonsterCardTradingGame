@@ -1,4 +1,6 @@
-﻿using MonsterTradingCardGame.BL.CM;
+﻿using MonsterTradingCardGame.BL.BM;
+using MonsterTradingCardGame.BL.CM;
+using MonsterTradingCardGame.BL.SM;
 using MonsterTradingCardGame.BL.UM;
 using System.Net.Sockets;
 
@@ -10,6 +12,8 @@ namespace MonsterTradingCardGame.BL.HTTP {
             this.clientSocket = clientSocket;
         }
 
+        // TODO (Refactor): Method to be put in Endpoint classes instead of this class
+        // Refactor concerns users, deck and tradings!!!
         public void run() {
             var reader = new StreamReader(clientSocket.GetStream());
             var request = new HttpRequest(reader);
@@ -54,11 +58,17 @@ namespace MonsterTradingCardGame.BL.HTTP {
             } else if (request.Path[1].Equals("deck")) {
                 if (request.Method == HttpMethod.PUT) {
                     // TODO: Show and configure decks - CURL 11
+                    writer.WriteLine("Configuring decks...");
+                    EditDeckEndpoint deckController = new EditDeckEndpoint();
+                    deckController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
                     if (request.QueryParams != null) {
                         // TODO: Show different representation - CURL 13
+                        writer.WriteLine("Showing different representation...");
+                        AcquireDeckEndpoint deckController = new AcquireDeckEndpoint();
+                        deckController.HandleRequest(request, response);
                     } else {
-                        // TODO: Show - CURL 10-12
+                        // TODO: Show - CURL 10-12 _ The if-else is not necessary in here, but in the AcquireDeckEndpoint
                     }
                 } else {
                     response.ResponseCode = 400;
@@ -68,12 +78,36 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 }
             } else if (request.Path[1].Equals("stats")) {
                 // TODO: Show stats - CURL 15, 18
+                writer.WriteLine("Showing stats...");
+                StatisticsEndpoint statsController = new StatisticsEndpoint();
+                statsController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("score")) {
                 // TODO: Show scoreboard - CURL 16, 19
+                writer.WriteLine("Showing scoreboard...");
+                ScoreboardEndpoint scoreController = new ScoreboardEndpoint();
+                scoreController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("battle")) {
                 // TODO: Battle - CURL 17
+                writer.WriteLine("Starting battle...");
+                BattleEndpoint battleController = new BattleEndpoint();
+                battleController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("tradings")) {
                 // TODO: Trading deals - GET, POST, DELETE, 20-21
+                writer.WriteLine("Trading deals...");
+                if (request.Method == HttpMethod.POST) {
+                    TradeEndpoint tradeController = new TradeEndpoint();
+                    tradeController.HandleRequest(request, response);
+                } else if (request.Method == HttpMethod.GET) {
+                    // Refactor for method in endpoint
+                } else if (request.Method == HttpMethod.DELETE) {
+                    
+                } else {
+                    response.ResponseCode = 400;
+                    response.ResponseText = "Bad Request";
+                    response.ResponseContent = "Not enough arguments or wrong arguments given";
+                    response.Process();
+                }
+                
             } else {
                 Thread.Sleep(10000);
                 writer.WriteLine("This is interesting...");

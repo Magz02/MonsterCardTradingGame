@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonsterTradingCardGame.BL.HTTP {
-    public enum HttpMethod {
-        POST,
-        GET,
-        PUT,
-        DELETE
+namespace MonsterTradingCardGame.BL.BM {
+    public class TradeEndpoint {
     }
 }
