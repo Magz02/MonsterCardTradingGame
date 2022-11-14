@@ -24,9 +24,11 @@ namespace MonsterTradingCardGame.BL.HTTP {
                     RegisterUserEndpoint userController = new RegisterUserEndpoint();
                     userController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
-                    // TODO: Get user - CURL 14
+                    GetUserEndpoint userController = new GetUserEndpoint();
+                    userController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.PUT) {
-                    // TODO: Edit user - CURL 14
+                    EditUserEndpoint userController = new EditUserEndpoint();
+                    userController.HandleRequest(request, response);
                 } else {
                     response.ResponseCode = 400;
                     response.ResponseText = "Bad Request";
@@ -46,8 +48,9 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 AcquirePackageEndpoint packageController = new AcquirePackageEndpoint();
                 packageController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("cards")) {
-                // TODO: Show all acquired cards CURL 8-9
+                // Shows all acquired cards of person with a token
                 writer.WriteLine("Acquiring cards...");
+                AcquirePackageEndpoint cardController = new AcquirePackageEndpoint();
             } else if (request.Path[1].Equals("deck")) {
                 if (request.Method == HttpMethod.PUT) {
                     // TODO: Show and configure decks - CURL 11
@@ -63,6 +66,14 @@ namespace MonsterTradingCardGame.BL.HTTP {
                     response.ResponseContent = "Not enough arguments or wrong arguments given";
                     response.Process();
                 }
+            } else if (request.Path[1].Equals("stats")) {
+                // TODO: Show stats - CURL 15, 18
+            } else if (request.Path[1].Equals("score")) {
+                // TODO: Show scoreboard - CURL 16, 19
+            } else if (request.Path[1].Equals("battle")) {
+                // TODO: Battle - CURL 17
+            } else if (request.Path[1].Equals("tradings")) {
+                // TODO: Trading deals - GET, POST, DELETE, 20-21
             } else {
                 Thread.Sleep(10000);
                 writer.WriteLine("This is interesting...");
