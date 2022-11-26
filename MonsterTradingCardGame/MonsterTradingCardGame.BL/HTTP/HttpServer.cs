@@ -9,7 +9,7 @@ using System.Net.Sockets;
 namespace MonsterTradingCardGame.BL.HTTP {
     public class HttpServer {
         private readonly int port;
-        private readonly IPAddress loopback; //static??
+        private readonly IPAddress loopback;
 
         private TcpListener httpServer;
 

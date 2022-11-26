@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Q2yP0usgIRPt8Ee4B0AnXtDWPpI2K49MmoPQ7BJJvKvQv6x+5p0fumzsEjvlz7f/0eV/tgC1E3/sN6oqlNWCdA==",
+  "dgSpecHash": "4MHecGtnzo41rU1990lyjpMV4l3wG07GQ3TJnufkmgrbQwGGzzIflWDdm3kne2VuLq2Omtz9yYhY7pIpbt6lBg==",
   "success": true,
   "projectFilePath": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame.BL\\MonsterTradingCardGame.BL.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\ormak\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\npgsql\\7.0.0\\npgsql.7.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

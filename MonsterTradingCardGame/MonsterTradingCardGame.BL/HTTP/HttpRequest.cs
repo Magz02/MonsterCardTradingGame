@@ -60,12 +60,21 @@ namespace MonsterTradingCardGame.BL.HTTP {
             }
 
             // content
-            // TODO: JSON ReadLine
-            //Content = "{\"Username\":\"kienboec\", \"Password\":\"daniel\"}";
-            /*while ((line = reader.ReadLine()) != null) {
-                Console.WriteLine(line);
-                Content += line;
-            }*/
+            Content = "";
+            var data = new StringBuilder();
+            int contentLength = int.Parse(headers["Content-Length"]);
+            if (contentLength > 0) {
+                char[] buffer = new char[1024];
+                int totalBytesRead = 0;
+                while (totalBytesRead < contentLength) {
+                    var bytesRead = reader.Read(buffer, 0, 1024);
+                    if (bytesRead == 0)
+                        break;
+                    totalBytesRead += bytesRead;
+                    data.Append(buffer, 0, bytesRead);
+                }
+            }
+            Content = data.ToString();
         }
     }
 }

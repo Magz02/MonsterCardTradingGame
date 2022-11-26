@@ -60,13 +60,13 @@ namespace MonsterTradingCardGame.BL.HTTP {
                     // TODO: Show and configure decks - CURL 11
                     writer.WriteLine("Configuring decks...");
                     EditDeckEndpoint deckController = new EditDeckEndpoint();
-                    deckController.HandleRequest(request, response);
+                    //deckController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
                     if (request.QueryParams != null) {
                         // TODO: Show different representation - CURL 13
                         writer.WriteLine("Showing different representation...");
                         AcquireDeckEndpoint deckController = new AcquireDeckEndpoint();
-                        deckController.HandleRequest(request, response);
+                        //deckController.HandleRequest(request, response);
                     } else {
                         // TODO: Show - CURL 10-12 _ The if-else is not necessary in here, but in the AcquireDeckEndpoint
                     }
@@ -80,23 +80,23 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 // TODO: Show stats - CURL 15, 18
                 writer.WriteLine("Showing stats...");
                 StatisticsEndpoint statsController = new StatisticsEndpoint();
-                statsController.HandleRequest(request, response);
+                //statsController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("score")) {
                 // TODO: Show scoreboard - CURL 16, 19
                 writer.WriteLine("Showing scoreboard...");
                 ScoreboardEndpoint scoreController = new ScoreboardEndpoint();
-                scoreController.HandleRequest(request, response);
+                //scoreController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("battle")) {
                 // TODO: Battle - CURL 17
                 writer.WriteLine("Starting battle...");
                 BattleEndpoint battleController = new BattleEndpoint();
-                battleController.HandleRequest(request, response);
+                //battleController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("tradings")) {
                 // TODO: Trading deals - GET, POST, DELETE, 20-21
                 writer.WriteLine("Trading deals...");
                 if (request.Method == HttpMethod.POST) {
                     TradeEndpoint tradeController = new TradeEndpoint();
-                    tradeController.HandleRequest(request, response);
+                    //tradeController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
                     // Refactor for method in endpoint
                 } else if (request.Method == HttpMethod.DELETE) {

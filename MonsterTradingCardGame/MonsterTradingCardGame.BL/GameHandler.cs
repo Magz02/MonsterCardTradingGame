@@ -8,9 +8,9 @@ namespace MonsterTradingCardGame.BL {
             //ctor
         }
 
-        public static void PerformBattle(User player) {
+        /*public static void PerformBattle(User player) {
             Console.WriteLine($"{player}");
-        }
+        }*/
 
         public void run() {
             server.Run();

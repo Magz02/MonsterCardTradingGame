@@ -18,3 +18,5 @@ C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\Mo
 C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.pdb
 C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\MonsterTradingCardGame.genruntimeconfig.cache
 C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net6.0\ref\MonsterTradingCardGame.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net6.0\Npgsql.dll
