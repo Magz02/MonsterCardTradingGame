@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.DAL {
     internal interface IPsqlConnection {
-        void query()
+        void query();
     }
 }

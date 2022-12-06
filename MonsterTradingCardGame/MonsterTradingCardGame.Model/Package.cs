@@ -8,11 +8,15 @@ namespace MonsterTradingCardGame.Model {
     public class Package {
         // ctor
         public Package() {
-            // create a new package
-            this.Cards = new List<Card>();
+            
         }
 
         // fields
-        public List<Card> Cards { get; set; }
+        public Card card1id { get; set; }
+        public Card card2id { get; set; }
+        public Card card3id { get; set; }
+        public Card card4id { get; set; }
+        public Card card5id { get; set; }
+
     }
 }

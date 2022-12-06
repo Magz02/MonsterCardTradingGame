@@ -21,9 +21,9 @@ namespace MonsterTradingCardGame.BL.CM {
                     // GET cards WHERE token = rq.headers["Authorization"]
                     // here is a temp package
                     Package package = new Package();
-                    package.Cards.Add(new Card("TestCard", Model.Enums.Type.Monster, Element.Neutral, 10));
-                    package.Cards.Add(new Card("TestCardFire", Model.Enums.Type.Spell, Element.Fire, 20));
-                    package.Cards.Add(new Card("TestCardWater", Model.Enums.Type.Monster, Element.Water, 55));
+                    //package.Cards.Add(new Card("TestCard", Model.Enums.Type.Monster, Element.Neutral, 10));
+                    //package.Cards.Add(new Card("TestCardFire", Model.Enums.Type.Spell, Element.Fire, 20));
+                    //package.Cards.Add(new Card("TestCardWater", Model.Enums.Type.Monster, Element.Water, 55));
                     var packageJson = JsonSerializer.Serialize(package);
                     rs.ResponseCode = 200;
                     rs.ResponseText = "OK";

@@ -53,10 +53,8 @@ namespace MonsterTradingCardGame.BL.UM {
                 }
 
                 reader.Close();
-
-                User loggedUser = user;
-                TEMPORARY temp = new(loggedUser);
-                temp.Announce();
+                connection.Close();
+                
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
                 rs.Process();

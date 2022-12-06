@@ -42,6 +42,8 @@ namespace MonsterTradingCardGame.BL.UM {
 
                 c.Prepare();
                 command.ExecuteNonQuery();
+
+                connection.Close();
                 
                 rs.ResponseCode = 201;
                 rs.ResponseText = "Created";

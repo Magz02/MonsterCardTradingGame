@@ -8,20 +8,21 @@ using MonsterTradingCardGame.Model.Enums;
 namespace MonsterTradingCardGame.Model {
     public class Card {
         // ctor
-        public Card(string name, Enums.Type type, Element element, int dmg) {
+        public Card(string id, string name, string element, string type, double damage) {
+            this.Id = id;
             this.Name = name;
-            this.Type = type;
-            this.Element = element;
-            this.dmg = dmg;
+            this.Element = (Element)Enum.Parse(typeof(Element), element);
+            this.Type = (Enums.Type)Enum.Parse(typeof(Enums.Type), type);
+            this.Damage = damage;
         }
-
-        // fields
-        int dmg;
-
+        
         // properties
-        public string Name { get; }
+        public double Damage { get; set; }
 
-        public Enums.Type Type { get; }
-        public Element Element { get; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public Enums.Type Type { get; set; }
+        public Element Element { get; set; }
     }
 }

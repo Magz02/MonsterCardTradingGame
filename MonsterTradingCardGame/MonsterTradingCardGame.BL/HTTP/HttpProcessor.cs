@@ -44,7 +44,6 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 userController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("packages")) {
                 // creates packages of cards
-                writer.WriteLine("Creating packages");
                 CreatePackageEndpoint packageController = new CreatePackageEndpoint();
                 packageController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("transactions") && request.Path[2].Equals("packages")) {

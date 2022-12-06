@@ -9,28 +9,12 @@
         int coins = 20;
         Deck allCards = new Deck();
         Deck battleDeck = new Deck();
+        bool isLoggedIn = false;
 
         // properties
         public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
-
-        /*public static bool Login(string? username, string? password) {
-            //throw new NotImplementedException();
-
-            if (username == "Test" && password == "1234") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public static bool Register(string username, string password) {
-            throw new NotImplementedException();
-        }
-
-        public static User LoginSuccess(string username, string password) {
-            return new User(username, password);
-        }*/
+        
     }
 }
