@@ -8,10 +8,10 @@ namespace MonsterTradingCardGame.Model {
     public class Deck {
         // ctor
         public Deck() {
-            
+
         }
 
         // fields
-        private List<Card> deck = new List<Card>();
+        private List<Package> deck = new List<Package>();
     }
 }

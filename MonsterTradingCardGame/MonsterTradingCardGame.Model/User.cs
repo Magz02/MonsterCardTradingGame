@@ -1,27 +1,20 @@
 ﻿namespace MonsterTradingCardGame.Model {
     public class User {
-        // ctor
-        public User(string name, string password) {
-            this.name = name;
-            this.password = password;
+        public User(string username, string password) {
+            this.Username = username;
+            this.Password = password;
         }
-        
+       
         // fields
-        string name = "";
-        string password = "";
         int coins = 20;
         Deck allCards = new Deck();
         Deck battleDeck = new Deck();
+        bool isLoggedIn = false;
 
         // properties
-        public string Name {
-            get => name;
-            set => name = value;
-        }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Token { get; set; }
         
-        public string Password {
-            get => password;
-            set => password = value;
-        }
     }
 }

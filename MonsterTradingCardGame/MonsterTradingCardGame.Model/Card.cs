@@ -3,30 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonsterTradingCardGame.Model.Enums;
 
 namespace MonsterTradingCardGame.Model {
     public class Card {
         // ctor
-        public Card(String name, int type, int element, int dmg) {
-            this.name = name;
-            this.type = type;
-            this.element = element;
-            this.dmg = dmg;
+        public Card(string id, string name, string element, string type, double damage) {
+            this.Id = id;
+            this.Name = name;
+            this.Element = (Element)Enum.Parse(typeof(Element), element);
+            this.Type = (Enums.Type)Enum.Parse(typeof(Enums.Type), type);
+            this.Damage = damage;
         }
-
-        // fields
-        String name;
-        int type; // 0 = Monster, 1 = Spell
-        int element; // 0 = Neutral, 1 = Fire, 2 = Water
-        int dmg; 
-
+        
         // properties
-        public String Name {
-            get { return this.name; }
-        }
+        public double Damage { get; set; }
 
-        public int Type {
-            get { return this.type; }
-        }
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public Enums.Type Type { get; set; }
+        public Element Element { get; set; }
     }
 }
