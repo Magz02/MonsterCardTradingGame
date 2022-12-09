@@ -23,6 +23,8 @@ namespace MonsterTradingCardGame.BL.UM {
                 IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
                 connection.Open();
 
+                // TODO: Save user that is logged in
+
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
                     select username, password, token from users 

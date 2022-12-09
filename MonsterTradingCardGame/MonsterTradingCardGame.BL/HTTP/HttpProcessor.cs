@@ -12,7 +12,7 @@ namespace MonsterTradingCardGame.BL.HTTP {
             this.clientSocket = clientSocket;
         }
 
-        // TODO (Refactor): Method to be put in Endpoint classes instead of this class
+        // TODO (Refactor): Method checking to be put in Endpoint classes instead of this class
         // Refactor concerns users, deck and tradings!!!
         public void run() {
             var reader = new StreamReader(clientSocket.GetStream());
@@ -47,7 +47,6 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 CreatePackageEndpoint packageController = new CreatePackageEndpoint();
                 packageController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("transactions") && request.Path[2].Equals("packages")) {
-                writer.WriteLine("Acquiring packages...");
                 AcquirePackageEndpoint packageController = new AcquirePackageEndpoint();
                 packageController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("cards")) {
@@ -103,7 +102,7 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 } else {
                     response.ResponseCode = 400;
                     response.ResponseText = "Bad Request";
-                    response.ResponseContent = "Not enough arguments or wrong arguments given";
+                    response.ResponseContent = "Not enough arguments or wrong argument given";
                     response.Process();
                 }
                 
@@ -112,8 +111,8 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 writer.WriteLine("This is interesting...");
                 response.ResponseCode = 200;
                 response.ResponseText = "OK";
-                response.Headers.Add("Content-Length", response.ResponseContent.Length.ToString());
-                response.Headers.Add("Content-Type", "application/json");
+                response.headers.Add("Content-Length", response.ResponseContent.Length.ToString());
+                response.headers.Add("Content-Type", "application/json");
                 // TODO: Refactor response.ResponseContent
                 response.Process();
             }

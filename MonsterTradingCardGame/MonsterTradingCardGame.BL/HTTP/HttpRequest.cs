@@ -62,19 +62,21 @@ namespace MonsterTradingCardGame.BL.HTTP {
             // content
             Content = "";
             var data = new StringBuilder();
-            int contentLength = int.Parse(headers["Content-Length"]);
-            if (contentLength > 0) {
-                char[] buffer = new char[1024];
-                int totalBytesRead = 0;
-                while (totalBytesRead < contentLength) {
-                    var bytesRead = reader.Read(buffer, 0, 1024);
-                    if (bytesRead == 0)
-                        break;
-                    totalBytesRead += bytesRead;
-                    data.Append(buffer, 0, bytesRead);
+            if (headers.ContainsKey("Content-Length")) {
+                int contentLength = int.Parse(headers["Content-Length"]);
+                if (contentLength > 0) {
+                    char[] buffer = new char[1024];
+                    int totalBytesRead = 0;
+                    while (totalBytesRead < contentLength) {
+                        var bytesRead = reader.Read(buffer, 0, 1024);
+                        if (bytesRead == 0)
+                            break;
+                        totalBytesRead += bytesRead;
+                        data.Append(buffer, 0, bytesRead);
+                    }
                 }
+                Content = data.ToString();
             }
-            Content = data.ToString();
         }
     }
 }

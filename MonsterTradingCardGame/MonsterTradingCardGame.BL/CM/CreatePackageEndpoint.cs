@@ -18,10 +18,11 @@ namespace MonsterTradingCardGame.BL.CM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                //var cards = JsonSerializer.Deserialize<Package>(rq.Content);
                 if (rq.headers["Authorization"] == null) {
                     throw new Exception("No Authorization");
                 }
+
+                // TODO: Check if user with a token exists and check his role
 
                 if (rq.headers["Authorization"] != "Basic admin-mtcgToken") {
                     throw new Exception("Unauthorized");
@@ -35,10 +36,7 @@ namespace MonsterTradingCardGame.BL.CM {
                 if (cardsJson[4] == null) {
                     throw new Exception("No valid cards package found");
                 }
-                // Card card1 = JsonSerializer.Deserialize<Card>(cardsJson[0].ToString()); - WANTED90
-                //Card card1 = new Card(cardsJson[0]["Id"].ToString(), cardsJson[0]["Name"].ToString(), cardsJson[0]["Element"].ToString(), cardsJson[0]["Type"].ToString(), ((double)cardsJson[0]["Damage"]));
-                //Console.WriteLine($"Name of the first card: {card1.Name}");
-                Card[] package = new Card[5];
+                string[] packageIds = new string[5];
                 IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
                 connection.Open();
 
@@ -50,10 +48,10 @@ namespace MonsterTradingCardGame.BL.CM {
                     Console.WriteLine($"Type of the {i} card: {currentCard.Type}");
                     Console.WriteLine($"Damage of the {i} card: {currentCard.Damage}");
                     AddCardToCardDB(currentCard, connection);
-                    package[i] = currentCard;
+                    packageIds[i] = currentCard.Id;
                 }
                 
-                AddCardstoPackageDB(package, connection);
+                AddCardstoPackageDB(packageIds, connection);
                 connection.Close();
 
                 rs.ResponseCode = 201;
@@ -93,7 +91,7 @@ namespace MonsterTradingCardGame.BL.CM {
             Console.WriteLine("Card added to DB");
         }
         
-        private void AddCardstoPackageDB(Card[] package, IDbConnection connection) {
+        private void AddCardstoPackageDB(string[] package, IDbConnection connection) {
             IDbCommand command = connection.CreateCommand();
             command.CommandText = @"
             insert into packages
@@ -102,11 +100,11 @@ namespace MonsterTradingCardGame.BL.CM {
                 (@card1id, @card2id, @card3id, @card4id, @card5id)";
 
             NpgsqlCommand c = command as NpgsqlCommand;
-            c.Parameters.AddWithValue("card1id", package[0].Id);
-            c.Parameters.AddWithValue("card2id", package[1].Id);
-            c.Parameters.AddWithValue("card3id", package[2].Id);
-            c.Parameters.AddWithValue("card4id", package[3].Id);
-            c.Parameters.AddWithValue("card5id", package[4].Id);
+            c.Parameters.AddWithValue("card1id", package[0]);
+            c.Parameters.AddWithValue("card2id", package[1]);
+            c.Parameters.AddWithValue("card3id", package[2]);
+            c.Parameters.AddWithValue("card4id", package[3]);
+            c.Parameters.AddWithValue("card5id", package[4]);
 
             c.Prepare();
             command.ExecuteNonQuery();
