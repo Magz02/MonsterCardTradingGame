@@ -3,20 +3,41 @@
         private StreamWriter writer;
         public int ResponseCode { get; set; }
         public string ResponseText { get; set; }
-        public Dictionary<string, string> Headers { get; }
+        public Dictionary<string, string> headers = new();
         public string ResponseContent { get; set; }
+        public string ContentType {
+            get {
+                return headers["Content-Type"];
+            }
+            set {
+                headers["Content-Type"] = value;
+            }
+        }
         
         public HttpResponse(StreamWriter writer) {
             this.writer = writer;
-            Headers = new Dictionary<string, string>();
         }
 
         public void Process() {
             string msg = $"HTTP/1.1 {ResponseCode} {ResponseText}";
+            Console.WriteLine(msg);
             writer.WriteLine(msg);
-            // headers... (skipped)
+            // TODO: Headers
+            /*if (ResponseContent != null && ResponseContent.Length > 0) {
+                headers.Add("Content-Length", ContentType.Length.ToString());
+            }
+            foreach (var kvp in headers) {
+                writer.WriteLine($"{kvp.Key}: {kvp.Value}");
+                Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }*/
             writer.WriteLine();
-            writer.WriteLine(ResponseContent);
+            Console.WriteLine();
+            // Content print
+            /*if (ResponseContent != null && ResponseContent.Length > 0) {
+                writer.WriteLine(ResponseContent);
+                Console.WriteLine(ResponseContent);
+            }*/
+            //writer.WriteLine(ResponseContent);
             writer.Flush();
             writer.Close();
         }
