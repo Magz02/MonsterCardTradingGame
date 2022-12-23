@@ -24,5 +24,9 @@ namespace MonsterTradingCardGame.Model {
 
         public Enums.Type Type { get; set; }
         public Element Element { get; set; }
+
+        public bool Chosen { get; set; }
+        
+        public string Owner { get; set; }
     }
 }

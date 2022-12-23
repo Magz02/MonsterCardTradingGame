@@ -14,9 +14,7 @@ namespace MonsterTradingCardGame.BL.UM {
             try {
                 Hash hash = new();
                 var user = JsonSerializer.Deserialize<User>(rq.Content);
-                // Console.WriteLine($"{user.Username}, {user.Password}");
                 if (user.Username == null || user.Password == null) {
-                    //throws exception
                     throw new Exception("One of the arguments is empty");
                 }
                 // TODO: hash password
@@ -30,16 +28,17 @@ namespace MonsterTradingCardGame.BL.UM {
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
                 insert into users 
-                    (username, password, coins, token) 
+                    (username, password, coins, token, elo) 
                 values
-                    (@username, @password, @coins, @token)";
+                    (@username, @password, @coins, @token, @elo)";
 
                 NpgsqlCommand c = command as NpgsqlCommand;
                 c.Parameters.AddWithValue("username", user.Username);
                 c.Parameters.AddWithValue("password", hash.HashValue(user.Password));
                 c.Parameters.AddWithValue("coins", 20);
                 c.Parameters.AddWithValue("token", $"Basic {user.Username}-mtcgToken");
-
+                c.Parameters.AddWithValue("elo", 100);
+                
                 c.Prepare();
                 command.ExecuteNonQuery();
 
@@ -48,13 +47,12 @@ namespace MonsterTradingCardGame.BL.UM {
                 rs.ResponseCode = 201;
                 rs.ResponseText = "Created";
                 rs.Process();
-                // here is the user created- DB
-                Thread.Sleep(10000);
             }
             catch (Exception) {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Failed to register new User";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
         }

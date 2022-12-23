@@ -7,14 +7,14 @@
        
         // fields
         int coins = 20;
-        Deck allCards = new Deck();
-        Deck battleDeck = new Deck();
+        List<Card> allCards;
+        List<Card> deck;
         bool isLoggedIn = false;
 
         // properties
         public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
-        
+        public int Elo { get; set; }
     }
 }

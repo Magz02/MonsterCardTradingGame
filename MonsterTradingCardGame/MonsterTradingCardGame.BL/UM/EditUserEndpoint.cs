@@ -14,15 +14,24 @@ namespace MonsterTradingCardGame.BL.UM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                // send query to DB to update user - with rq.content
+                if (!rq.headers.ContainsKey("Authorization")) {
+                    throw new Exception("No authorization token found");
+                }
+
+                /*if (rq.headers["Authorization"] != rq.QueryParams["token"]) {
+                    throw new Exception("Authorization token does not match the token in the query params");
+                }*/
+                
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
                 rs.ResponseContent = "User updated";
+                rs.ContentType = "text/plain";
             }
             catch (Exception) {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Failed to update User";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
         }

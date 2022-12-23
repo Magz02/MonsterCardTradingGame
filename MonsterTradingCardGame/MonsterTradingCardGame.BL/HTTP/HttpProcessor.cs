@@ -21,7 +21,6 @@ namespace MonsterTradingCardGame.BL.HTTP {
 
             var writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
             var response = new HttpResponse(writer);
-            // TODO: Communication to BL
 
             if (request.Path[1].Equals("users") && request.Method == HttpMethod.POST) {
                 if (request.Method == HttpMethod.POST) {
@@ -50,9 +49,8 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 AcquirePackageEndpoint packageController = new AcquirePackageEndpoint();
                 packageController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("cards")) {
-                // Shows all acquired cards of person with a token
-                writer.WriteLine("Acquiring cards...");
-                AcquirePackageEndpoint cardController = new AcquirePackageEndpoint();
+                AcquireCardsEndpoint cardController = new AcquireCardsEndpoint();
+                cardController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("deck")) {
                 if (request.Method == HttpMethod.PUT) {
                     // TODO: Show and configure decks - CURL 11
@@ -60,14 +58,8 @@ namespace MonsterTradingCardGame.BL.HTTP {
                     EditDeckEndpoint deckController = new EditDeckEndpoint();
                     //deckController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
-                    if (request.QueryParams != null) {
-                        // TODO: Show different representation - CURL 13
-                        writer.WriteLine("Showing different representation...");
-                        AcquireDeckEndpoint deckController = new AcquireDeckEndpoint();
-                        //deckController.HandleRequest(request, response);
-                    } else {
-                        // TODO: Show - CURL 10-12 _ The if-else is not necessary in here, but in the AcquireDeckEndpoint
-                    }
+                    AcquireDeckEndpoint deckController = new AcquireDeckEndpoint();
+                    deckController.HandleRequest(request, response);
                 } else {
                     response.ResponseCode = 400;
                     response.ResponseText = "Bad Request";
@@ -112,7 +104,7 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 response.ResponseCode = 200;
                 response.ResponseText = "OK";
                 response.headers.Add("Content-Length", response.ResponseContent.Length.ToString());
-                response.headers.Add("Content-Type", "application/json");
+                response.headers.Add("Content-Type", "text/plain");
                 // TODO: Refactor response.ResponseContent
                 response.Process();
             }

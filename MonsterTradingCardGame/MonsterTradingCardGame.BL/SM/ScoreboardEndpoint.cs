@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.BL.SM {
     public class ScoreboardEndpoint {
+        
     }
 }
