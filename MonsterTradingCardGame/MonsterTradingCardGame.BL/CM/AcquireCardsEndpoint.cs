@@ -92,6 +92,7 @@ namespace MonsterTradingCardGame.BL.CM {
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Cards could not be acquired";
                 rs.ContentType = "text/plain";
+                rs.Process();
             }
         }
     }

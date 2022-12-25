@@ -32,9 +32,9 @@ namespace MonsterTradingCardGame.BL.HTTP {
             Console.WriteLine($"Path0: {Path[0]}");
             var pathParts = Path[0].Split("?");
             Console.WriteLine($"PathParts0: {pathParts[0]}");
-            if (pathParts.Length == 2) {
+            if (Path.Length == 2) {
                 // we have query params after the ?-char
-                var queryParams = pathParts[1].Split('&');
+                var queryParams = Path[1].Split('&');
                 foreach (string queryParam in queryParams) {
                     var queryParamParts = queryParam.Split('=');
                     if (queryParamParts.Length == 2) {
