@@ -91,8 +91,7 @@ namespace MonsterTradingCardGame.BL.CM {
 
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
-
-                // if queryparams has "format" as a key and it's value is "plain" then return plain text
+                
                 if (rq.QueryParams.ContainsKey("format") && rq.QueryParams["format"] == "plain") {
                     rs.ContentType = "text/plain";
                     rs.ResponseContentList = new List<string>();
@@ -102,12 +101,6 @@ namespace MonsterTradingCardGame.BL.CM {
                     rs.Process();
                     return;
                 }
-
-                /*if (rq.QueryParams["format"] == "plain") {
-                    //TODO : RESPONSE CONTENT AS STRING
-                    rs.ContentType = "text/plain";
-                    return;
-                }*/
                 rs.ResponseContent = deckJson;
                 rs.ContentType = "application/json";
                 rs.Process();

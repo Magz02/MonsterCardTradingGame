@@ -6,7 +6,6 @@
         }
        
         // fields
-        int coins = 20;
         List<Card> allCards;
         List<Card> deck;
         bool isLoggedIn = false;
@@ -16,5 +15,7 @@
         public string Password { get; set; }
         public string Token { get; set; }
         public int Elo { get; set; }
+        public int Coins { get; set; }
+        public int Id { get; set; }
     }
 }

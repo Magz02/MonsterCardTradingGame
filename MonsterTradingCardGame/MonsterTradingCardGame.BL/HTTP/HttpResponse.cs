@@ -24,19 +24,19 @@
             Console.WriteLine(msg);
             writer.WriteLine(msg);
 
-            if (ContentType == "application/json") {
-                if (ResponseContent != null) {
-                    writer.WriteLine($"Content: {ResponseContent}");
-                }
-                // TODO: Headers
-                if (ResponseContent != null && ResponseContent.Length > 0) {
-                    headers.Add("Content-Length", ContentType.Length.ToString());
-                }
-                foreach (var kvp in headers) {
-                    writer.WriteLine($"{kvp.Key}: {kvp.Value}");
-                    Console.WriteLine($"{kvp.Key}: {kvp.Value}");
-                }
-            } else if (ContentType == "text/plain") {
+            if (ResponseContent != null) {
+                writer.WriteLine($"Content: {ResponseContent}");
+            }
+            // TODO: Headers
+            if (ResponseContent != null && ResponseContent.Length > 0) {
+                headers.Add("Content-Length", ContentType.Length.ToString());
+            }
+            foreach (var kvp in headers) {
+                writer.WriteLine($"{kvp.Key}: {kvp.Value}");
+                Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
+            
+            if (ResponseContentList != null) {
                 foreach (var line in ResponseContentList) {
                     writer.WriteLine(line);
                     Console.WriteLine(line);

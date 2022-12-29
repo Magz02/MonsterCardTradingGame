@@ -54,9 +54,8 @@ namespace MonsterTradingCardGame.BL.HTTP {
             } else if (request.Path[1].Equals("deck")) {
                 if (request.Method == HttpMethod.PUT) {
                     // TODO: Show and configure decks - CURL 11
-                    writer.WriteLine("Configuring decks...");
                     EditDeckEndpoint deckController = new EditDeckEndpoint();
-                    //deckController.HandleRequest(request, response);
+                    deckController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
                     AcquireDeckEndpoint deckController = new AcquireDeckEndpoint();
                     deckController.HandleRequest(request, response);
