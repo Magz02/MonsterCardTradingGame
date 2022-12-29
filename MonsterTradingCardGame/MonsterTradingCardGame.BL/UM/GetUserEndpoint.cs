@@ -22,12 +22,14 @@ namespace MonsterTradingCardGame.BL.UM {
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
                 rs.ResponseContent = userJson;
+                rs.ContentType = "application/json";
                 rs.Process();
             }
             catch (Exception) {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Failed to get User";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
         }

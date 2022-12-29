@@ -10,3 +10,6 @@ C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\Mo
 C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\refint\MonsterTradingCardGame.DAL.dll
 C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.pdb
 C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\ref\MonsterTradingCardGame.DAL.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\bin\Debug\net6.0\MonsterTradingCardGame.Model.dll
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\bin\Debug\net6.0\MonsterTradingCardGame.Model.pdb
+C:\Users\ormak\Documents\GitHub\MonsterCardTradingGame\MonsterTradingCardGame\MonsterTradingCardGame.DAL\obj\Debug\net6.0\MonsterTradingCardGame.DAL.csproj.CopyComplete

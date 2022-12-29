@@ -27,7 +27,7 @@ namespace MonsterTradingCardGame.BL.UM {
 
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
-                    select username, password, token from users 
+                    select username, password, token, elo from users 
                     where username = @username";
 
                 var pUSERNAME = command.CreateParameter();
@@ -46,7 +46,9 @@ namespace MonsterTradingCardGame.BL.UM {
                         break;
                     }
                     var userToken = reader.GetString(2);
+                    var userElo = reader.GetInt32(3);
                     user.Token = userToken;
+                    user.Elo = userElo;
                     entries++;
                 }
                 
@@ -59,12 +61,15 @@ namespace MonsterTradingCardGame.BL.UM {
                 
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
+                rs.ResponseContent = $"User {user.Username} logged in successfully";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
             catch (Exception) {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Failed to login User";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
         }

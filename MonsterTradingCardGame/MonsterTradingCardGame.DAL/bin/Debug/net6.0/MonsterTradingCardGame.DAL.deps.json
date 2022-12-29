@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v6.0": {
       "MonsterTradingCardGame.DAL/1.0.0": {
+        "dependencies": {
+          "MonsterTradingCardGame.Model": "1.0.0"
+        },
         "runtime": {
           "MonsterTradingCardGame.DAL.dll": {}
+        }
+      },
+      "MonsterTradingCardGame.Model/1.0.0": {
+        "runtime": {
+          "MonsterTradingCardGame.Model.dll": {}
         }
       }
     }
   },
   "libraries": {
     "MonsterTradingCardGame.DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MonsterTradingCardGame.Model/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

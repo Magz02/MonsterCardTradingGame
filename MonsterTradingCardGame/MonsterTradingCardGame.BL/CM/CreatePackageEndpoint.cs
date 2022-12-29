@@ -47,6 +47,8 @@ namespace MonsterTradingCardGame.BL.CM {
                     Console.WriteLine($"Element of the {i} card: {currentCard.Element}");
                     Console.WriteLine($"Type of the {i} card: {currentCard.Type}");
                     Console.WriteLine($"Damage of the {i} card: {currentCard.Damage}");
+                    currentCard.Owner = "package";
+                    currentCard.Chosen = false;
                     AddCardToCardDB(currentCard, connection);
                     packageIds[i] = currentCard.Id;
                 }
@@ -62,6 +64,7 @@ namespace MonsterTradingCardGame.BL.CM {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Failed to create Package";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
         }
@@ -71,9 +74,9 @@ namespace MonsterTradingCardGame.BL.CM {
             IDbCommand command = connection.CreateCommand();
             command.CommandText = @"
             insert into cards
-                (id, name, type, element, damage)
+                (id, name, type, element, damage, owner_name, chosen)
             values
-                (@id, @name, @type, @element, @damage)";
+                (@id, @name, @type, @element, @damage, @owner_name, @chosen)";
 
             string elementDB = currentCard.Element.ToString();
             string typeDB = currentCard.Type.ToString();
@@ -84,6 +87,8 @@ namespace MonsterTradingCardGame.BL.CM {
             c.Parameters.AddWithValue("type", typeDB);
             c.Parameters.AddWithValue("element", elementDB);
             c.Parameters.AddWithValue("damage", currentCard.Damage);
+            c.Parameters.AddWithValue("owner_name", currentCard.Owner);
+            c.Parameters.AddWithValue("chosen", currentCard.Chosen);
 
             c.Prepare();
             command.ExecuteNonQuery();

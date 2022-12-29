@@ -90,20 +90,22 @@ namespace MonsterTradingCardGame.BL.CM {
                     cardids[3] = packages[0].Card4id;
                     cardids[4] = packages[0].Card5id;
 
-                    IDbCommand addToDeckCommand = connection.CreateCommand();
-                    
-                    foreach (var card in cardids) {
-                        // TODO: PSQL constraints
-                        addToDeckCommand.CommandText = @"
-                            insert into decks (card_id, owner_name)
-                            values (@cardid, @ownername)";
 
-                        NpgsqlCommand c = addToDeckCommand as NpgsqlCommand;
-                        c.Parameters.AddWithValue("cardid", card);
-                        c.Parameters.AddWithValue("ownername", username);
+
+                    foreach (var card in cardids) {
+                        IDbCommand changeOwnerCommand = connection.CreateCommand();
+                        changeOwnerCommand.CommandText = @"
+                            update cards
+                            set owner_name = @owner_name
+                            where id = @id";
+                        // TODO: PSQL constraints
+
+                        NpgsqlCommand c = changeOwnerCommand as NpgsqlCommand;
+                        c.Parameters.AddWithValue("owner_name", username);
+                        c.Parameters.AddWithValue("id", card);
 
                         c.Prepare();
-                        addToDeckCommand.ExecuteNonQuery();
+                        changeOwnerCommand.ExecuteNonQuery();
                     }
 
                     // Update user coins, take 5 away
@@ -113,11 +115,11 @@ namespace MonsterTradingCardGame.BL.CM {
                     updateCoins.CommandText = @"
                         update users
                         set coins = @coins
-                        where username = @username";
+                        where token = @token";
 
                     NpgsqlCommand cU = updateCoins as NpgsqlCommand;
                     cU.Parameters.AddWithValue("coins", coins);
-                    cU.Parameters.AddWithValue("username", username);
+                    cU.Parameters.AddWithValue("token", token);
 
                     cU.Prepare();
                     cU.ExecuteNonQuery();
@@ -143,6 +145,7 @@ namespace MonsterTradingCardGame.BL.CM {
                     rs.ResponseCode = 401;
                     rs.ResponseText = "Unauthorized";
                     rs.ResponseContent = "Failed to authorize the user. No token given.";
+                    rs.ContentType = "text/plain";
                     rs.Process();
                 }
             }
@@ -150,6 +153,7 @@ namespace MonsterTradingCardGame.BL.CM {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
                 rs.ResponseContent = "Failed to acquire Package";
+                rs.ContentType = "text/plain";
                 rs.Process();
             }
         }
