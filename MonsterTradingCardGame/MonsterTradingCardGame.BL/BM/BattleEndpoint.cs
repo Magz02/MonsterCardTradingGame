@@ -53,7 +53,19 @@ namespace MonsterTradingCardGame.BL.BM {
                     allUsersExceptUser.Add(userToAdd);
                 }
 
-                
+                foreach (var that in allUsersExceptUser) {
+                    Console.WriteLine($"User: {that.Id} - {that.Username}. Coins: {that.Coins}. Elo: {that.Elo}");
+                }
+
+                reader.Close();
+                connection.Close();
+
+                rs.ResponseCode = 200;
+                rs.ResponseText = "OK";
+                rs.ResponseContent = "Battle finished - placeholder of a message";
+                rs.ContentType = "text/plain";
+                rs.Process();
+
             }
             catch (Exception) {
                 rs.ResponseCode = 400;
