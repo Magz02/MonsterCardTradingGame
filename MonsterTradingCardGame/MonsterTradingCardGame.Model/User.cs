@@ -17,5 +17,8 @@
         public int Elo { get; set; }
         public int Coins { get; set; }
         public int Id { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Games { get; set; }
     }
 }

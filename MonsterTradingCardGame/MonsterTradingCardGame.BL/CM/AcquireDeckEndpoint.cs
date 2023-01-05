@@ -89,6 +89,9 @@ namespace MonsterTradingCardGame.BL.CM {
                     deckJson = JsonSerializer.Serialize(chosenDeck);
                 }
 
+                reader.Close();
+                connection.Close();
+                
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
                 

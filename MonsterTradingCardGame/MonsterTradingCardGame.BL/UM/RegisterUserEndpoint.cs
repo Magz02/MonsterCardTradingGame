@@ -28,9 +28,9 @@ namespace MonsterTradingCardGame.BL.UM {
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
                 insert into users 
-                    (username, password, coins, token, elo) 
+                    (username, password, coins, token, elo, games, wins, losses) 
                 values
-                    (@username, @password, @coins, @token, @elo)";
+                    (@username, @password, @coins, @token, @elo, @games, @wins, @losses)";
 
                 NpgsqlCommand c = command as NpgsqlCommand;
                 c.Parameters.AddWithValue("username", user.Username);
@@ -38,7 +38,10 @@ namespace MonsterTradingCardGame.BL.UM {
                 c.Parameters.AddWithValue("coins", 20);
                 c.Parameters.AddWithValue("token", $"Basic {user.Username}-mtcgToken");
                 c.Parameters.AddWithValue("elo", 100);
-                
+                c.Parameters.AddWithValue("games", 0);
+                c.Parameters.AddWithValue("wins", 0);
+                c.Parameters.AddWithValue("losses", 0);
+
                 c.Prepare();
                 command.ExecuteNonQuery();
 

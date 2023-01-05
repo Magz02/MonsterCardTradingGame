@@ -15,7 +15,6 @@ namespace MonsterTradingCardGame.Test {
         
         ***/
 
-        //checks if user is created properly - AAA Pattern
         
     }
 }
