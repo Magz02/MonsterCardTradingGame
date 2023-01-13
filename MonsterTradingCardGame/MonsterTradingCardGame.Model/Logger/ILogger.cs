@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.Model.Logger {
-    internal interface ILogger {
+    public interface ILogger {
+        public void Log(string message);
+        public string getTimestamp(DateTime value);
     }
 }

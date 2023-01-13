@@ -17,16 +17,18 @@ namespace MonsterTradingCardGame.BL.CM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                if (rq.headers["Authorization"] == null) {
-                    throw new Exception("No Authorization");
+                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+                connection.Open();
+
+                LoggedInValidator validator = new LoggedInValidator();
+                if (!validator.Validate(rq.headers, connection)) {
+                    connection.Close();
+                    throw new Exception("No authorization token found or user not logged in");
                 }
 
                 List<Card> allCards = new();
                 List<Card> chosenDeck = new();
                 var token = rq.headers["Authorization"];
-
-                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
-                connection.Open();
 
                 IDbCommand commandUsername = connection.CreateCommand();
                 commandUsername.CommandText = @"select username from users where token = @token";
@@ -76,6 +78,10 @@ namespace MonsterTradingCardGame.BL.CM {
 
                 var deckJson = "";
 
+                if (allCards.Count == 0) {
+                    throw new Exception("No cards found");
+                }
+
                 while (chosenDeck.Count < 4) {
                     chosenDeck.Add(allCards[0]);
                     allCards.RemoveAt(0);
@@ -89,6 +95,9 @@ namespace MonsterTradingCardGame.BL.CM {
                     deckJson = JsonSerializer.Serialize(chosenDeck);
                 }
 
+                reader.Close();
+                connection.Close();
+                
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
                 

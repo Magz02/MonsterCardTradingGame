@@ -12,7 +12,7 @@ namespace MonsterTradingCardGame.BL.UM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                Hash hash = new();
+                Hash hash = new Hash();
                 var user = JsonSerializer.Deserialize<User>(rq.Content);
                 if (user.Username == null || user.Password == null) {
                     throw new Exception("One of the arguments is empty");
@@ -28,17 +28,19 @@ namespace MonsterTradingCardGame.BL.UM {
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
                 insert into users 
-                    (username, password, coins, token, elo) 
+                    (username, password, coins, elo, games, wins, losses) 
                 values
-                    (@username, @password, @coins, @token, @elo)";
+                    (@username, @password, @coins, @elo, @games, @wins, @losses)";
 
                 NpgsqlCommand c = command as NpgsqlCommand;
                 c.Parameters.AddWithValue("username", user.Username);
                 c.Parameters.AddWithValue("password", hash.HashValue(user.Password));
                 c.Parameters.AddWithValue("coins", 20);
-                c.Parameters.AddWithValue("token", $"Basic {user.Username}-mtcgToken");
                 c.Parameters.AddWithValue("elo", 100);
-                
+                c.Parameters.AddWithValue("games", 0);
+                c.Parameters.AddWithValue("wins", 0);
+                c.Parameters.AddWithValue("losses", 0);
+
                 c.Prepare();
                 command.ExecuteNonQuery();
 

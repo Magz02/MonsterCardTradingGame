@@ -17,8 +17,13 @@ namespace MonsterTradingCardGame.BL.CM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                if (rq.headers["Authorization"] == null) {
-                    throw new Exception("No Authorization");
+                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+                connection.Open();
+
+                LoggedInValidator validator = new LoggedInValidator();
+                if (!validator.Validate(rq.headers, connection)) {
+                    connection.Close();
+                    throw new Exception("No authorization token found or user not logged in");
                 }
 
                 List<string> desiredDeck = JsonSerializer.Deserialize<List<string>>(rq.Content);
@@ -27,9 +32,6 @@ namespace MonsterTradingCardGame.BL.CM {
                 if (desiredDeck == null || desiredDeck.Count != 4) {
                     throw new Exception("Invalid deck");
                 }
-
-                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
-                connection.Open();
 
                 IDbCommand commandUsername = connection.CreateCommand();
                 commandUsername.CommandText = @"select username from users where token = @token";
@@ -63,6 +65,24 @@ namespace MonsterTradingCardGame.BL.CM {
 
                 deleteDeckCommand.ExecuteNonQuery();
 
+                // verify if the cards exist loop
+                foreach (var cardId in desiredDeck) {
+                    IDbCommand command = connection.CreateCommand();
+                    command.CommandText = @"select id from cards where id = @id and owner_name = @owner_name";
+
+                    NpgsqlCommand c = command as NpgsqlCommand;
+                    c.Parameters.AddWithValue("id", cardId);
+                    c.Parameters.AddWithValue("owner_name", username);
+
+                    var reader2 = command.ExecuteReader();
+                    while(reader2.Read()) {
+                        Console.WriteLine("Found");
+                    }
+
+                    reader2.Close();
+                }
+
+                // update all cards
                 foreach (var cardId in desiredDeck) {
                     IDbCommand updateDeckCommand = connection.CreateCommand();
                     updateDeckCommand.CommandText = @"update cards set chosen = true where owner_name = @owner_name and id = @id";

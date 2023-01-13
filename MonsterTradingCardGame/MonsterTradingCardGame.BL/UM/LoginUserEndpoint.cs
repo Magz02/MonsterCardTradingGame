@@ -27,7 +27,7 @@ namespace MonsterTradingCardGame.BL.UM {
 
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
-                    select username, password, token, elo from users 
+                    select username, password, elo from users 
                     where username = @username";
 
                 var pUSERNAME = command.CreateParameter();
@@ -45,9 +45,7 @@ namespace MonsterTradingCardGame.BL.UM {
                         throw new Exception("Wrong password");
                         break;
                     }
-                    var userToken = reader.GetString(2);
-                    var userElo = reader.GetInt32(3);
-                    user.Token = userToken;
+                    var userElo = reader.GetInt32(2);
                     user.Elo = userElo;
                     entries++;
                 }
@@ -57,11 +55,34 @@ namespace MonsterTradingCardGame.BL.UM {
                 }
 
                 reader.Close();
+
+                var token = $"Basic {user.Username}-mtcgToken";
+
+                IDbCommand tokenCommand = connection.CreateCommand();
+                tokenCommand.CommandText = @"
+                    update users set token = @token
+                    where username = @username";
+
+                var pTOKEN = tokenCommand.CreateParameter();
+                pTOKEN.DbType = DbType.String;
+                pTOKEN.ParameterName = "token";
+                pTOKEN.Value = token;
+                tokenCommand.Parameters.Add(pTOKEN);
+
+                var pUSERNAMEtoToken = tokenCommand.CreateParameter();
+                pUSERNAMEtoToken.DbType = DbType.String;
+                pUSERNAMEtoToken.ParameterName = "username";
+                pUSERNAMEtoToken.Value = user.Username;
+                tokenCommand.Parameters.Add(pUSERNAMEtoToken);
+
+                tokenCommand.Prepare();
+                tokenCommand.ExecuteNonQuery();
+
                 connection.Close();
                 
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
-                rs.ResponseContent = $"User {user.Username} logged in successfully";
+                rs.ResponseContent = $"User {user.Username} token generated: {token}. Login successful!";
                 rs.ContentType = "text/plain";
                 rs.Process();
             }

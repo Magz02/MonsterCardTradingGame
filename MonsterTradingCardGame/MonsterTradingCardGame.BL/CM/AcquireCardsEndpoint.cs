@@ -13,15 +13,17 @@ namespace MonsterTradingCardGame.BL.CM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                if (!rq.headers.ContainsKey("Authorization")) {
-                    throw new Exception("No authorization token found");
+                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+                connection.Open();
+
+                LoggedInValidator validator = new LoggedInValidator();
+                if (!validator.Validate(rq.headers, connection)) {
+                    connection.Close();
+                    throw new Exception("No authorization token found or user not logged in");
                 }
 
                 var token = rq.headers["Authorization"];
                 List<Card> cards = new();
-
-                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
-                connection.Open();
 
                 IDbCommand getOwnerCommand = connection.CreateCommand();
                 getOwnerCommand.CommandText = @"select username from users where token = @token";

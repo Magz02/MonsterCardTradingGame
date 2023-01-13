@@ -18,12 +18,13 @@ namespace MonsterTradingCardGame.BL.CM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                if (rq.headers.ContainsKey("Authorization")) {
+                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+                connection.Open();
+
+                LoggedInValidator validator = new LoggedInValidator();
+                if (validator.Validate(rq.headers, connection)) {
                     // getting the package from user with token
                     var token = rq.headers["Authorization"];
-
-                    IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
-                    connection.Open();
 
                     // get all packages
                     IDbCommand command = connection.CreateCommand();
@@ -142,6 +143,7 @@ namespace MonsterTradingCardGame.BL.CM {
                     rs.ResponseText = "OK";
                     rs.Process();
                 } else {
+                    connection.Close();
                     rs.ResponseCode = 401;
                     rs.ResponseText = "Unauthorized";
                     rs.ResponseContent = "Failed to authorize the user. No token given.";
