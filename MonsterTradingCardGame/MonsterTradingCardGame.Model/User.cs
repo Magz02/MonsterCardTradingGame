@@ -20,5 +20,6 @@
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Games { get; set; }
+        public string CardIdToDelete { get; set; }
     }
 }

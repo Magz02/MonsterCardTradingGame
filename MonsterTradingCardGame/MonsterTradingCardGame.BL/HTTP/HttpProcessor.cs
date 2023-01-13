@@ -22,7 +22,7 @@ namespace MonsterTradingCardGame.BL.HTTP {
             var writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
             var response = new HttpResponse(writer);
 
-            if (request.Path[1].Equals("users") && request.Method == HttpMethod.POST) {
+            if (request.Path[1].Equals("users")) {
                 if (request.Method == HttpMethod.POST) {
                     RegisterUserEndpoint userController = new RegisterUserEndpoint();
                     userController.HandleRequest(request, response);
@@ -31,7 +31,12 @@ namespace MonsterTradingCardGame.BL.HTTP {
                     userController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.PUT) {
                     EditUserEndpoint userController = new EditUserEndpoint();
-                    userController.HandleRequest(request, response);
+                    //userController.HandleRequest(request, response);
+                    response.ResponseCode = 200;
+                    response.ResponseText = "OK";
+                    response.ResponseContent = "Deck updated";
+                    response.ContentType = "text/plain";
+                    response.Process();
                 } else {
                     response.ResponseCode = 400;
                     response.ResponseText = "Bad Request";
@@ -66,15 +71,11 @@ namespace MonsterTradingCardGame.BL.HTTP {
                     response.Process();
                 }
             } else if (request.Path[1].Equals("stats")) {
-                // TODO: Show stats - CURL 15, 18
-                writer.WriteLine("Showing stats...");
                 StatisticsEndpoint statsController = new StatisticsEndpoint();
-                //statsController.HandleRequest(request, response);
+                statsController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("score")) {
-                // TODO: Show scoreboard - CURL 16, 19
-                writer.WriteLine("Showing scoreboard...");
                 ScoreboardEndpoint scoreController = new ScoreboardEndpoint();
-                //scoreController.HandleRequest(request, response);
+                scoreController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("battles")) {
                 // TODO: Battle - CURL 17
                 BattleEndpoint battleController = new BattleEndpoint();

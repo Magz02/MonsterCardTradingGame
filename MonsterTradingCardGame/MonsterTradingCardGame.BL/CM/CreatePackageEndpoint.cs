@@ -18,14 +18,13 @@ namespace MonsterTradingCardGame.BL.CM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                if (rq.headers["Authorization"] == null) {
-                    throw new Exception("No Authorization");
-                }
+                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+                connection.Open();
 
-                // TODO: Check if user with a token exists and check his role
-
-                if (rq.headers["Authorization"] != "Basic admin-mtcgToken") {
-                    throw new Exception("Unauthorized");
+                LoggedInValidator validator = new LoggedInValidator();
+                if (!validator.ValidateAdmin(rq.headers, connection)) {
+                    connection.Close();
+                    throw new Exception("No authorization token found or admin not logged in");
                 }
                 
                 var cardsJson = JsonNode.Parse(rq.Content);
@@ -37,8 +36,6 @@ namespace MonsterTradingCardGame.BL.CM {
                     throw new Exception("No valid cards package found");
                 }
                 string[] packageIds = new string[5];
-                IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
-                connection.Open();
 
                 for (int i = 0; i < 5; i++) {
                     Card currentCard = new Card(cardsJson[i]["Id"].ToString(), cardsJson[i]["Name"].ToString(), cardsJson[i]["Element"].ToString(), cardsJson[i]["Type"].ToString(), ((double)cardsJson[i]["Damage"]));

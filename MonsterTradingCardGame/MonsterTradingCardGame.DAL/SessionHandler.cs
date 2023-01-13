@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonsterTradingCardGame.DAL {
-    public class ConnectionHandler {
+    public class SessionHandler {
         
         User currentUser;
 
-        public ConnectionHandler(User currentUser) {
-            this.currentUser = currentUser;
+        public SessionHandler() {
+            
         }
         
     }

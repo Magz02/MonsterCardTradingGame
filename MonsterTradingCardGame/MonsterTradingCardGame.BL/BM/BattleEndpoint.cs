@@ -1,5 +1,6 @@
 ﻿using MonsterTradingCardGame.BL.HTTP;
 using MonsterTradingCardGame.Model;
+using MonsterTradingCardGame.Model.Logger;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -17,19 +18,23 @@ namespace MonsterTradingCardGame.BL.BM {
 
         public void HandleRequest(HttpRequest rq, HttpResponse rs) {
             try {
-                if (rq.headers["Authorization"] == null) {
-                    throw new Exception("No authorization token found");
-                }
-
-                var token = rq.headers["Authorization"];
-
                 IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
                 connection.Open();
+                
+                LoggedInValidator validator = new LoggedInValidator();
+                if (!validator.Validate(rq.headers, connection)) {
+                    connection.Close();
+                    throw new Exception("No authorization token found or user not logged in");
+                }
+                
+                Logger logger = new();
+                var token = rq.headers["Authorization"];
 
                 List<User> allUsersExceptUser = new();
+                User user = getUser(token, connection, logger);
 
                 IDbCommand allUsersCommand = connection.CreateCommand();
-                allUsersCommand.CommandText = @"select * from users where token != @token";
+                allUsersCommand.CommandText = @"select * from users where token != @token and username != 'admin'";
 
                 var pTOKEN = allUsersCommand.CreateParameter();
                 pTOKEN.DbType = DbType.String;
@@ -49,37 +54,87 @@ namespace MonsterTradingCardGame.BL.BM {
                     userToAdd.Games = reader.GetInt32(6);
                     userToAdd.Wins = reader.GetInt32(7);
                     userToAdd.Losses = reader.GetInt32(8);
+                    logger.Log($"User added to list without current user: {userToAdd.Username}. (Current user: {user.Username})");
                     allUsersExceptUser.Add(userToAdd);
                 }
+
+                reader.Close();
 
                 Random rnd = new Random();
                 int num = rnd.Next() % allUsersExceptUser.Count;
 
                 User opponent = allUsersExceptUser[num];
-                Console.WriteLine($"Opponent chosen: {opponent.Id} - {opponent.Username}. Coins: {opponent.Coins}. Elo: {opponent.Elo}");
+                logger.Log($"Opponent for battle chosen: {opponent.Id} - {opponent.Username}. Coins: {opponent.Coins}. Elo: {opponent.Elo}");
 
-                Card[] userDeck = new Card[4];
-                Card[] opponentDeck = new Card[4];
+                List<Card> userDeck = new();
+                List<Card> opponentDeck = new();
 
-                User user = getUser(token, connection);
-                userDeck = getDeck(user, connection);
-                opponentDeck = getDeck(opponent, connection);
+                userDeck = getDeck(user, connection, logger);
+                logger.Log($"User deck acquired: {userDeck}");
+                opponentDeck = getDeck(opponent, connection, logger);
+                logger.Log($"Opponent deck acquired: {opponentDeck}");
+
+                if (user == null) {
+                    throw new Exception("User not found");
+                }
 
                 int i = 1;
+                int userWins = 0;
+                int userLosses = 0;
+                int opponentWins = 0;
+                int opponentLosses = 0;
+                bool userDeckLast = false;
+                bool opponentDeckLast = false;
 
-                while (userDeck.Length > 0 && opponentDeck.Length > 0) {
-                    Console.WriteLine($"Round {i}");
-                    fight(userDeck, opponentDeck, user, opponent, connection);
+                while (userDeck.Count > 0 && opponentDeck.Count > 0) {
+                    logger.Log($"Beginning round {i}");
+                    User winner = fight(userDeck, opponentDeck, user, opponent, connection, logger);
+                    logger.Log(winner != null ? $"Round {i} final result: win of {winner.Username}" : $"Round {i} final result: Draw");
+
+                    if (winner == user) {
+                        userWins++;
+                        opponentLosses++;
+                        logger.Log($"User wins, and gets one more win to his account: {userWins}");
+                    } else {
+                        opponentWins++;
+                        userLosses++;
+                        logger.Log($"Opponent wins, and gets one more win to his account: {opponentWins}");
+                    }
+
+                    // UNIQUE FEATURE - if user has only one card left, the last card's damage is it's basic damage + 5, to make it the last way to defend from loss
+                    if (userDeck.Count == 1 && userDeckLast == false) {
+                        userDeck[0].Damage += 5;
+                        logger.Log($"User {user.Username} has only one card left, damage + 5 to last card, to make defense easier");
+                        userDeckLast = true;
+                    }
+
+                    if (opponentDeck.Count == 1 && opponentDeckLast == false) {
+                        opponentDeck[0].Damage += 5;
+                        logger.Log($"Opponent {opponent.Username} has only one card left, damage + 5 to last card, to make defense easier");
+                        opponentDeckLast = true;
+                    }
+
                     i++;
                 }
 
+                updateStats(user.Username, userWins, userLosses, connection, logger);
+                updateStats(opponent.Username, opponentWins, opponentLosses, connection, logger);
+
                 // final steps
-                reader.Close();
                 connection.Close();
+
+                string finalWinner = userWins > opponentWins ? user.Username : opponent.Username;
+                if (finalWinner == user.Username) {
+                    eloUpdate(user, opponent, connection, logger);
+                } else {
+                    eloUpdate(opponent, user, connection, logger);
+                }
+                
+                logger.Log(userWins > opponentWins ? $"Final winner: {finalWinner} with {userWins} wins." : $"Final winner: {finalWinner} with {opponentWins} wins.");
 
                 rs.ResponseCode = 200;
                 rs.ResponseText = "OK";
-                rs.ResponseContent = "Battle finished - placeholder of a message";
+                rs.ResponseContent = $"Battle finished succesfully - the winner was {finalWinner}";
                 rs.ContentType = "text/plain";
                 rs.Process();
 
@@ -87,13 +142,39 @@ namespace MonsterTradingCardGame.BL.BM {
             catch (Exception) {
                 rs.ResponseCode = 400;
                 rs.ResponseText = "Bad Request";
-                rs.ResponseContent = "Cards could not be acquired";
+                rs.ResponseContent = "Battle unsuccessful";
                 rs.ContentType = "text/plain";
                 rs.Process();
             }
         }
 
-        private User getUser(string token, IDbConnection connection) {
+        private void updateStats(string username, int wins, int losses, IDbConnection connection, Logger logger) {
+            IDbCommand command = connection.CreateCommand();
+            command.CommandText = @"update users set wins = wins + @wins, losses = losses + @losses where username = @username";
+
+            var pWINS = command.CreateParameter();
+            pWINS.DbType = DbType.Int32;
+            pWINS.ParameterName = "wins";
+            pWINS.Value = wins;
+            command.Parameters.Add(pWINS);
+
+            var pLOSSES = command.CreateParameter();
+            pLOSSES.DbType = DbType.Int32;
+            pLOSSES.ParameterName = "losses";
+            pLOSSES.Value = losses;
+            command.Parameters.Add(pLOSSES);
+
+            var pUSERNAME = command.CreateParameter();
+            pUSERNAME.DbType = DbType.String;
+            pUSERNAME.ParameterName = "username";
+            pUSERNAME.Value = username;
+            command.Parameters.Add(pUSERNAME);
+
+            command.ExecuteNonQuery();
+            logger.Log($"User {username} stats updated - +{wins} wins, +{losses} losses.");
+        }
+
+        private User getUser(string token, IDbConnection connection, Logger logger) {
             IDbCommand commandUsername = connection.CreateCommand();
             commandUsername.CommandText = @"select * from users where token = @token";
 
@@ -120,70 +201,121 @@ namespace MonsterTradingCardGame.BL.BM {
             }
 
             if (user == null) {
+                logger.Log("User not found");
                 throw new Exception("No user found");
             }
 
+            logger.Log($"User {user.Username} found");
             reader.Close();
             return user;
         }
 
-        private User fight(Card[] userDeck, Card[] opponentDeck, User user, User opponent, IDbConnection connection) {
-            throw new NotImplementedException();
+        private User fight(List<Card> userDeck, List<Card> opponentDeck, User user, User opponent, IDbConnection connection, Logger logger) {
             // choose random card from userDeck
             Random rnd = new Random();
-            int num = rnd.Next() % userDeck.Length;
-            Card userCard = userDeck[num];
-            Console.WriteLine($"User card: {userCard.Name}");
+            int numUser = rnd.Next() % userDeck.Count;
+            Card userCard = userDeck[numUser];
+            logger.Log($"User card chosen: {userCard.Name} (card no. {numUser} from deck)");
 
             // choose random card from opponentDeck
-            num = rnd.Next() % opponentDeck.Length;
-            Card opponentCard = opponentDeck[num];
-            Console.WriteLine($"Opponent card: {opponentCard.Name}");
+            int numOpponent = rnd.Next() % opponentDeck.Count;
+            Card opponentCard = opponentDeck[numOpponent];
+            logger.Log($"Opponent card chosen: {opponentCard.Name} (card no. {numOpponent} from deck)");
 
             User winner = null;
             User loser = null;
 
             // specialties
-            winner = considerSpecial(userCard, opponentCard, user, opponent);
+            winner = considerSpecial(userCard, opponentCard, user, opponent, logger);
 
             if (winner != null) {
-                Console.WriteLine($"Winner is {winner.Username}");
-                eloUpdate(winner, loser, connection);
+                loser = winner == user ? opponent : user;
+                logger.Log(winner == user ? $"Winner is {winner.Username} because of specialties of his card - {userCard}" : $"Winner is {winner.Username} because of specialties of his card - {opponentCard}");
+                winner.Wins++;
+                loser.Losses++;
                 return winner;
             }
-
-            // compare two cards - 
-            if (userCard.Type == Model.Enums.Type.Monster && opponentCard.Type == Model.Enums.Type.Monster) {
-                winner = monsterVsMonster(userCard, opponentCard, user, opponent);
-            } else if (userCard.Type == Model.Enums.Type.Spell && opponentCard.Type == Model.Enums.Type.Spell) {
-                winner = spellVsSpell(userCard, opponentCard, user, opponent);
-            } else if (userCard.Type == Model.Enums.Type.Spell && opponentCard.Type == Model.Enums.Type.Monster) {
-                winner = spellVsMonster(userCard, opponentCard, user, opponent);
-            } else if (userCard.Type == Model.Enums.Type.Monster && opponentCard.Type == Model.Enums.Type.Spell) {
-                winner = monsterVsSpell(userCard, opponentCard, user, opponent);
-            }
-
-            // set winner
-            gamesUpdate(user, opponent, connection);
             
+            winner = considerNormal(userCard, opponentCard, user, opponent, logger);
+            logger.Log(winner == user ? $"Winner is {winner.Username} because of normal attack of his card - {userCard.Name}" : $"Winner is {winner.Username} because of normal attack of his card - {opponentCard.Name}");
+
+            loser = winner == user ? opponent : user;
+            
+            gamesUpdate(user, opponent, connection, logger);
+
             if (winner == null) {
-                Console.WriteLine($"No winner! Draw!");
+                logger.Log($"No winner! Draw!");
                 return null;
+            } else {
+                winner.Wins++;
+                loser.Losses++;
+            }
+            
+            if (winner == user) {
+                changeOwner(opponentCard, user, connection, logger);
+                opponentDeck.Remove(opponentCard);
+                logger.Log($"Card {opponentCard.Name} removed from opponent deck after loss");
+            } else if (winner == opponent) {
+                changeOwner(userCard, opponent, connection, logger);
+                userDeck.Remove(userCard);
+                logger.Log($"Card {userCard.Name} removed from user deck after loss");
             }
 
-            eloUpdate(winner, loser, connection);
+            logger.Log($"Function fight finished, returned {winner}");
             return winner;
         }
 
-        private void gamesUpdate(User user, User opponent, IDbConnection connection) {
+        private void changeOwner(Card card, User user, IDbConnection connection, Logger logger) {
+            IDbCommand command = connection.CreateCommand();
+            command.CommandText = @"update cards set owner_name = @owner_name where id = @id";
+
+            var pOWNER = command.CreateParameter();
+            pOWNER.DbType = DbType.String;
+            pOWNER.ParameterName = "owner_name";
+            pOWNER.Value = user.Username;
+            command.Parameters.Add(pOWNER);
+
+            var pID = command.CreateParameter();
+            pID.DbType = DbType.String;
+            pID.ParameterName = "id";
+            pID.Value = card.Id;
+            command.Parameters.Add(pID);
+
+            command.Prepare();
+            command.ExecuteNonQuery();
+            logger.Log($"Card {card.Name} changed owner to {user.Username}");
+        }
+
+        private User considerNormal(Card userCard, Card opponentCard, User user, User opponent, Logger logger) {
+            if ((userCard.Element == Model.Enums.Element.Water && opponentCard.Element == Model.Enums.Element.Fire) ||
+                (userCard.Element == Model.Enums.Element.Fire && opponentCard.Element == Model.Enums.Element.Water)) {
+                logger.Log(userCard.Element == Model.Enums.Element.Water ? "EFFECTIVE ATTACK! User's water beats opponent's fire" : "EFFECTIVE ATTACK! Opponent's water beats user's fire");
+                return userCard.Element == Model.Enums.Element.Water ? user : opponent;
+            }
+            if ((userCard.Element == Model.Enums.Element.Fire && opponentCard.Element == Model.Enums.Element.Neutral) ||
+                (userCard.Element == Model.Enums.Element.Neutral && opponentCard.Element == Model.Enums.Element.Fire)) {
+                logger.Log(userCard.Element == Model.Enums.Element.Fire ? "EFFECTIVE ATTACK! User's fire beats opponent's non-elementary card" : "EFFECTIVE ATTACK! Opponent's fire beats user's non-elementary card");
+                return userCard.Element == Model.Enums.Element.Fire ? user : opponent;
+            }
+            if ((userCard.Element == Model.Enums.Element.Neutral && opponentCard.Element == Model.Enums.Element.Water) ||
+                userCard.Element == Model.Enums.Element.Water && opponentCard.Element == Model.Enums.Element.Neutral) {
+                logger.Log(userCard.Element == Model.Enums.Element.Neutral ? "EFFECTIVE ATTACK! User's non-elementary card beats opponent's water" : "EFFECTIVE ATTACK! Opponent's non-elementary card beats user's water");
+                return userCard.Element == Model.Enums.Element.Neutral ? user : opponent;
+            }
+
+            return userCard.Damage > opponentCard.Damage ? user : opponent;
+        }
+
+        private void gamesUpdate(User user, User opponent, IDbConnection connection, Logger logger) {
             user.Games++;
             opponent.Games++;
 
-            gamesCommandUpdate(user, connection);
-            gamesCommandUpdate(opponent, connection);
+            gamesCommandUpdate(user, connection, logger);
+            gamesCommandUpdate(opponent, connection, logger);
+            logger.Log($"User has now: {user.Games} games, opponent: {opponent.Games} games");
         }
-
-        private void gamesCommandUpdate(User user, IDbConnection connection) {
+        
+        private void gamesCommandUpdate(User user, IDbConnection connection, Logger logger) {
             IDbCommand command = connection.CreateCommand();
             command.CommandText = @"update users set games = @games where username = @username";
 
@@ -200,9 +332,10 @@ namespace MonsterTradingCardGame.BL.BM {
             command.Parameters.Add(pUSERNAME);
 
             command.ExecuteNonQuery();
+            logger.Log($"Games updated for {user.Username}");
         }
 
-        private void eloUpdate(User winner, User loser, IDbConnection connection) {
+        private void eloUpdate(User winner, User loser, IDbConnection connection, Logger logger) {
             int winsWinner = winner.Wins;
             int lossesWinner = winner.Losses;
             int gamesWinner = winner.Games;
@@ -214,17 +347,21 @@ namespace MonsterTradingCardGame.BL.BM {
             int eloWinner = winner.Elo;
             int eloLoser = loser.Elo;
 
-            int eloOpponentWinner = getOpponentElo(winner, connection);
-            int eloOpponentLoser = getOpponentElo(loser, connection);
+            int eloOpponentWinner = getOpponentElo(winner, connection, logger);
+            int eloOpponentLoser = getOpponentElo(loser, connection, logger);
 
-            int eloWinnerNew = calculateElo(eloOpponentWinner, winsWinner, lossesWinner, gamesWinner);
-            int eloLoserNew = calculateElo(eloOpponentLoser, winsLoser, lossesLoser, gamesLoser);
+            int eloWinnerNew = calculateElo(eloOpponentWinner, winsWinner, lossesWinner, gamesWinner, logger);
+            logger.Log($"Elo of winner {winner.Username} will be changed from {eloWinner} to {eloWinnerNew}");
+            int eloLoserNew = calculateElo(eloOpponentLoser, winsLoser, lossesLoser, gamesLoser, logger);
+            logger.Log($"Elo of loser {loser.Username} will be changed from {eloLoser} to {eloLoserNew}");
 
-            eloCommandUpdate(winner, eloWinnerNew, connection);
-            eloCommandUpdate(loser, eloLoserNew, connection);
+            eloCommandUpdate(winner, eloWinnerNew, connection, logger);
+            logger.Log($"Elo of winner {winner.Username} changed.");
+            eloCommandUpdate(loser, eloLoserNew, connection, logger);
+            logger.Log($"Elo of loser {loser.Username} changed.");
         }
 
-        private void eloCommandUpdate(User user, int eloNew, IDbConnection connection) {
+        private void eloCommandUpdate(User user, int eloNew, IDbConnection connection, Logger logger) {
             IDbCommand command = connection.CreateCommand();
             command.CommandText = @"update users set elo = @elo where username = @username";
 
@@ -243,11 +380,13 @@ namespace MonsterTradingCardGame.BL.BM {
             command.ExecuteNonQuery();
         }
 
-        private int calculateElo(int opponentRating, int wins, int losses, int games) {
-            return (opponentRating + (400 * (wins - losses))) / games;
+        private int calculateElo(int opponentRating, int wins, int losses, int games, Logger logger) {
+            int up = opponentRating + (400 * (wins - losses));
+            int elo = up / games;
+            return elo < 100 ? 100 : elo;
         }
 
-        private int getOpponentElo(User user, IDbConnection connection) {
+        private int getOpponentElo(User user, IDbConnection connection, Logger logger) {
             int elo = 0;
             
             IDbCommand commandOpponentElo = connection.CreateCommand();
@@ -268,7 +407,7 @@ namespace MonsterTradingCardGame.BL.BM {
             return elo;
         }
 
-        private User considerSpecial(Card userCard, Card opponentCard, User user, User opponent) {
+        private User considerSpecial(Card userCard, Card opponentCard, User user, User opponent, Logger logger) {
             if ((userCard.Name == "Goblin" && opponentCard.Name == "Dragon") || (userCard.Name == "Dragon" && opponentCard.Name == "Goblin")) {
                 return userCard.Name == "Goblin" ? opponent : user;
             } else if ((userCard.Name == "Wizard" && opponentCard.Name == "Ork") || (userCard.Name == "Ork" && opponentCard.Name == "Wizard")) {
@@ -284,25 +423,9 @@ namespace MonsterTradingCardGame.BL.BM {
             return null;
         }
 
-        private User monsterVsSpell(Card userCard, Card opponentCard, User user, User opponent) {
-            throw new NotImplementedException();
-        }
-
-        private User spellVsMonster(Card userCard, Card opponentCard, User user, User opponent) {
-            throw new NotImplementedException();
-        }
-
-        private User spellVsSpell(Card userCard, Card opponentCard, User user, User opponent) {
-            throw new NotImplementedException();
-        }
-
-        private User monsterVsMonster(Card userCard, Card opponentCard, User user, User opponent) {
-            throw new NotImplementedException();
-        }
-
-        private Card[] getDeck(User user, IDbConnection connection) {
+        private List<Card> getDeck(User user, IDbConnection connection, Logger logger) {
             List<Card> allCards = new();
-            Card[] chosenDeck = new Card[4];
+            List<Card> chosenDeck = new();
             
             IDbCommand commandUserDeck = connection.CreateCommand();
             commandUserDeck.CommandText = @"select id, name, type, element, damage, chosen from cards where owner_name = @owner_name order by damage desc";
@@ -323,18 +446,22 @@ namespace MonsterTradingCardGame.BL.BM {
                 var isChosen = reader.GetBoolean(5);
                 Card toAdd = new Card(id, name, element, type, damage);
                 if (isChosen) {
-                    chosenDeck.Append(toAdd);
+                    chosenDeck.Add(toAdd);
                 } else {
                     allCards.Add(toAdd);
                 }
             }
 
-            while (chosenDeck.Length < 4) {
-                chosenDeck.Append(allCards[0]);
+            if (allCards.Count == 0) {
+                throw new Exception("No cards found");
+            }
+
+            while (chosenDeck.Count < 4) {
+                chosenDeck.Add(allCards[0]);
                 allCards.RemoveAt(0);
             }
 
-            if (chosenDeck.Length > 4) {
+            if (chosenDeck.Count > 4) {
                 throw new Exception("Deck is too big");
             }
 
