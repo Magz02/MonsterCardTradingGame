@@ -4,6 +4,7 @@ using MonsterTradingCardGame.Model.Enums;
 using System.Data;
 using Npgsql;
 using MonsterTradingCardGame.BL;
+using MonsterTradingCardGame.Model.Logger;
 
 namespace MonsterTradingCardGame.Test {
     public class UnitTests {
@@ -77,7 +78,7 @@ namespace MonsterTradingCardGame.Test {
         // TEST 4
         // Tests for user token if the user is logged in - existing user
         [Test]
-        public void LoginValidatorAuthorizedCheck() {
+        public void TestLoginValidatorAuthorizedCheck() {
             // Arrange
             IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
             connection.Open();
@@ -97,7 +98,7 @@ namespace MonsterTradingCardGame.Test {
         // TEST 5
         // Tests for user token if the user is logged in - non existing user (should be false)
         [Test]
-        public void LoginValidatorNonExistingUser() {
+        public void TestLoginValidatorNonExistingUser() {
             // Arrange
             IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
             connection.Open();
@@ -117,7 +118,7 @@ namespace MonsterTradingCardGame.Test {
         // TEST 6
         // Tests for user token if the user exists but is not logged in - should return false
         [Test]
-        public void LoginValidatorAuthorizedButNotLoggedInCheck() {
+        public void TestLoginValidatorAuthorizedButNotLoggedInCheck() {
             // Arrange
             IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
             connection.Open();
@@ -137,7 +138,7 @@ namespace MonsterTradingCardGame.Test {
         // TEST 7
         // Tries to validate but has no validation token - should return false
         [Test]
-        public void LoginValidatorNotAuthorized() {
+        public void TestLoginValidatorNotAuthorized() {
             // Arrange
             IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
             connection.Open();
@@ -155,7 +156,7 @@ namespace MonsterTradingCardGame.Test {
         // TEST 8
         // Validates whether user is admin
         [Test]
-        public void LoginValidatorIsAdmin() {
+        public void TestLoginValidatorIsAdmin() {
             // Arrange
             IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
             connection.Open();
@@ -174,7 +175,99 @@ namespace MonsterTradingCardGame.Test {
 
         // TEST 9
         // Validates whether user is admin but gives token of a normal user - should fail
-        public void LoginValidatorIsNotAdmin() {
+        [Test]
+        public void TestLoginValidatorIsNotAdmin() {
+            // Arrange
+            IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+            connection.Open();
+            LoggedInValidator validator = new LoggedInValidator();
+            Dictionary<string, string> headers = new();
+            User user = new User("kienboec", "daniel");
+            
+            // Act
+            headers.Add("Authorization", $"Basic {user.Username}-mtcgToken");
+            bool result = validator.ValidateAdmin(headers, connection);
+            connection.Close();
+
+            // Assert
+            Assert.That(result == false);
+        }
+
+        // TEST 10
+        // Checks if enums are parsed correctly
+        [Test]
+        public void TestEnumParsing() {
+            // Arrange
+            string element = "Water";
+            string type = "Monster";
+
+            // Act
+            Model.Enums.Element elementEnum = (Model.Enums.Element)Enum.Parse(typeof(Model.Enums.Element), element);
+            Model.Enums.Type typeEnum = (Model.Enums.Type)Enum.Parse(typeof(Model.Enums.Type), type);
+
+            // Assert
+            Assert.That(elementEnum == Model.Enums.Element.Water);
+            Assert.That(typeEnum == Model.Enums.Type.Monster);
+        }
+
+        // TEST 11
+        // Checks if passwords are hashed correctly
+        [Test]
+        public void TestPasswordHashing() {
+            // Arrange
+            string password = "password";
+            Hash hash = new Hash();
+
+            // Act
+            string hashedByHash = hash.HashValue(password);
+            string hashedSHA = "XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=";
+
+            // Assert
+            Assert.That(hashedByHash == hashedSHA);
+        }
+
+        // TEST 12
+        // Check stats class
+        [Test]
+        public void TestStats() {
+            // Arrange
+            Stats stats = new Stats(1, 2, 3, 100);
+
+            // Act
+            int games = stats.Games;
+            int wins = stats.Wins;
+            int losses = stats.Losses;
+            int elo = stats.Elo;
+
+            // Assert
+            Assert.That(games == 1);
+            Assert.That(wins == 2);
+            Assert.That(losses == 3);
+            Assert.That(elo == 100);
+        }
+
+        // TEST 13
+        // Tests hashing under extremely long passwords
+        [Test]
+        public void TestLongPasswordHashing() {
+            // Arrange
+            Hash hash = new Hash();
+            string password = "uhlghguoiagmcgicwoitewnyotevny8oqtvyn9tvunqewtv9ynpqewtvyn8oet8ynoqvvny8opvewqtvtynp" +
+                "vewqtpynteqwvyn9pqewtvmicfuigf9yr7iuuuiuhgiynoicgviugoigolgvoingvuopvtumoiwevyefggjaijgoijgaijgasoigas" +
+                "joigjoigadsjgdasiojjgdsaoijdgoijadsgoiadkgfklgsklgdasklgdasklgdasklgdasklsadgklgadskldasgkldasgkkjggjl";
+
+            // Act
+            string hashedByHash = hash.HashValue(password);
+            string hashedSHA = "3jzY2W48r3CfiB64c/rSCBLIMGUitl0Nhygcgiry31Q=";
+
+            // Assert
+            Assert.That(hashedByHash == hashedSHA);
+        }
+
+        // TEST 14
+        // Check if user is checked for correct token - correct version
+        [Test]
+        public void TestValidateUserTokenCorrect() {
             // Arrange
             IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
             connection.Open();
@@ -184,11 +277,91 @@ namespace MonsterTradingCardGame.Test {
 
             // Act
             headers.Add("Authorization", $"Basic {user.Username}-mtcgToken");
-            bool result = validator.Validate(headers, connection);
+            bool result = validator.ValidateCorrectToken(headers, connection, user.Username);
+            connection.Close();
+
+            // Assert
+            Assert.That(result == true);
+        }
+
+
+        // TEST 15
+        // Check if user is checked for correct token - failed version (user not logged in)
+        [Test]
+        public void TestValidateUserTokenNotLoggedIn() {
+            // Arrange
+            IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+            connection.Open();
+            LoggedInValidator validator = new LoggedInValidator();
+            Dictionary<string, string> headers = new();
+            User user = new User("TestFU", "TestFP");
+
+            // Act
+            headers.Add("Authorization", $"Basic {user.Username}-mtcgToken");
+            bool result = validator.ValidateCorrectToken(headers, connection, user.Username);
             connection.Close();
 
             // Assert
             Assert.That(result == false);
+        }
+
+        // TEST 16
+        // Check if user is checked for correct token - user does not exist
+        [Test]
+        public void TestValidateUserTokenDoesNotExist() {
+            // Arrange
+            IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+            connection.Open();
+            LoggedInValidator validator = new LoggedInValidator();
+            Dictionary<string, string> headers = new();
+            User user = new User("whoareyou", "doesntmatter");
+
+            // Act
+            headers.Add("Authorization", $"Basic {user.Username}-mtcgToken");
+            bool result = validator.ValidateCorrectToken(headers, connection, user.Username);
+            connection.Close();
+
+            // Assert
+            Assert.That(result == false);
+        }
+
+
+        // TEST 17
+        // Check if user is checked for correct token - wrong user+token combo
+        [Test]
+        public void TestValidateUserTokenWrongCombo() {
+            // Arrange
+            IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+            connection.Open();
+            LoggedInValidator validator = new LoggedInValidator();
+            Dictionary<string, string> headers = new();
+            User user = new User("kienboec", "daniel");
+            // Act
+            headers.Add("Authorization", $"Basic altenhof-mtcgToken");
+            bool result = validator.ValidateCorrectToken(headers, connection, user.Username);
+            connection.Close();
+
+            // Assert
+            Assert.That(result == false);
+        }
+
+        // TEST 18
+        // Check if user profile is generated correctly
+        [Test]
+        public void TestUserProfiles() {
+            // Arrange
+            Card card = new Card("tid", "TestName", "Fire", "Monster", 666.0);
+            UserProfile profile = new UserProfile("Tester", "This is my bio.", "XD");
+
+            // Act
+            string name = "Tester";
+            string bio = "This is my bio.";
+            string image = "XD";
+
+            // Assert
+            Assert.AreEqual(profile.Name, name);
+            Assert.AreEqual(profile.Bio, bio);
+            Assert.AreEqual(profile.Image, image);
         }
     }
 }

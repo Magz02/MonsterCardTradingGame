@@ -27,12 +27,35 @@ namespace MonsterTradingCardGame.BL {
                 command.Parameters.Add(pTOKEN);
 
                 var reader = command.ExecuteReader();
-                if (reader.Read()) {
+                while (reader.Read()) {
                     i++;
                 }
+                reader.Close();
             }
             
             return i == 1 ? true : false;
+        }
+
+        public bool ValidateCorrectToken(Dictionary<string, string> headers, IDbConnection connection, string searchedUsername) {
+            string foundUsername = "";
+            
+            IDbCommand command = connection.CreateCommand();
+            command.CommandText = @"select username from users where token = @token";
+
+            var pTOKEN = command.CreateParameter();
+            pTOKEN.ParameterName = "token";
+            pTOKEN.DbType = DbType.String;
+            pTOKEN.Value = headers["Authorization"];
+            command.Parameters.Add(pTOKEN);
+
+            var reader = command.ExecuteReader();
+            while (reader.Read()) {
+                foundUsername = reader.GetString(0);
+            }
+
+            reader.Close();
+
+            return foundUsername == searchedUsername ? true : false;
         }
 
         public bool ValidateAdmin(Dictionary<string, string> headers, IDbConnection connection) {
