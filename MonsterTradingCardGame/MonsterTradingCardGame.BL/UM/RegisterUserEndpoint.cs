@@ -44,6 +44,18 @@ namespace MonsterTradingCardGame.BL.UM {
                 c.Prepare();
                 command.ExecuteNonQuery();
 
+                IDbCommand profileCommand = connection.CreateCommand();
+                profileCommand.CommandText = @"insert into profiles (user_fun, name, bio, image) values (@user_fun, @name, @bio, @image)";
+
+                NpgsqlCommand profileC = profileCommand as NpgsqlCommand;
+                profileC.Parameters.AddWithValue("user_fun", user.Username);
+                profileC.Parameters.AddWithValue("name", "");
+                profileC.Parameters.AddWithValue("bio", "");
+                profileC.Parameters.AddWithValue("image", "");
+                
+                profileC.Prepare();
+                profileCommand.ExecuteNonQuery();
+
                 connection.Close();
                 
                 rs.ResponseCode = 201;

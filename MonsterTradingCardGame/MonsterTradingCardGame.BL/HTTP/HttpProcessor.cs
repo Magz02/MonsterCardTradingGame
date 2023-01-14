@@ -26,17 +26,12 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 if (request.Method == HttpMethod.POST) {
                     RegisterUserEndpoint userController = new RegisterUserEndpoint();
                     userController.HandleRequest(request, response);
-                } else if (request.Method == HttpMethod.GET) {
+                } else if (request.Method == HttpMethod.GET && request.Path[2] != null) {
                     GetUserEndpoint userController = new GetUserEndpoint();
                     userController.HandleRequest(request, response);
-                } else if (request.Method == HttpMethod.PUT) {
+                } else if (request.Method == HttpMethod.PUT && request.Path[2] != null) {
                     EditUserEndpoint userController = new EditUserEndpoint();
-                    //userController.HandleRequest(request, response);
-                    response.ResponseCode = 200;
-                    response.ResponseText = "OK";
-                    response.ResponseContent = "Deck updated";
-                    response.ContentType = "text/plain";
-                    response.Process();
+                    userController.HandleRequest(request, response);
                 } else {
                     response.ResponseCode = 400;
                     response.ResponseText = "Bad Request";
