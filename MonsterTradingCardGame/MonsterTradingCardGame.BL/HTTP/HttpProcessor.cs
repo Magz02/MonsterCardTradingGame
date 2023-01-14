@@ -84,14 +84,17 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 } else if (request.Method == HttpMethod.GET) {
                     // Refactor for method in endpoint
                 } else if (request.Method == HttpMethod.DELETE) {
-                    
+
                 } else {
                     response.ResponseCode = 400;
                     response.ResponseText = "Bad Request";
                     response.ResponseContent = "Not enough arguments or wrong argument given";
                     response.Process();
                 }
-                
+
+            } else if (request.Path[1].Equals("logout")) {
+                LogoutUserEndpoint logoutEndpoint = new LogoutUserEndpoint();
+                logoutEndpoint.HandleRequest(request, response);
             } else {
                 response.ResponseCode = 200;
                 response.ResponseText = "OK";

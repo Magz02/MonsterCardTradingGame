@@ -363,5 +363,8 @@ namespace MonsterTradingCardGame.Test {
             Assert.AreEqual(profile.Bio, bio);
             Assert.AreEqual(profile.Image, image);
         }
+
+        // TEST 19
+        // Check if database works correctly
     }
 }
