@@ -11,9 +11,7 @@ namespace MonsterTradingCardGame.BL.HTTP {
         public HttpProcessor(TcpClient clientSocket) {
             this.clientSocket = clientSocket;
         }
-
-        // TODO (Refactor): Method checking to be put in Endpoint classes instead of this class
-        // Refactor concerns users, deck and tradings!!!
+        
         public void run() {
             var reader = new StreamReader(clientSocket.GetStream());
             var request = new HttpRequest(reader);
@@ -53,7 +51,6 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 cardController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("deck")) {
                 if (request.Method == HttpMethod.PUT) {
-                    // TODO: Show and configure decks - CURL 11
                     EditDeckEndpoint deckController = new EditDeckEndpoint();
                     deckController.HandleRequest(request, response);
                 } else if (request.Method == HttpMethod.GET) {
@@ -72,26 +69,8 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 ScoreboardEndpoint scoreController = new ScoreboardEndpoint();
                 scoreController.HandleRequest(request, response);
             } else if (request.Path[1].Equals("battles")) {
-                // TODO: Battle - CURL 17
                 BattleEndpoint battleController = new BattleEndpoint();
                 battleController.HandleRequest(request, response);
-            } else if (request.Path[1].Equals("tradings")) {
-                // TODO: Trading deals - GET, POST, DELETE, 20-21
-                writer.WriteLine("Trading deals...");
-                if (request.Method == HttpMethod.POST) {
-                    TradeEndpoint tradeController = new TradeEndpoint();
-                    //tradeController.HandleRequest(request, response);
-                } else if (request.Method == HttpMethod.GET) {
-                    // Refactor for method in endpoint
-                } else if (request.Method == HttpMethod.DELETE) {
-
-                } else {
-                    response.ResponseCode = 400;
-                    response.ResponseText = "Bad Request";
-                    response.ResponseContent = "Not enough arguments or wrong argument given";
-                    response.Process();
-                }
-
             } else if (request.Path[1].Equals("logout")) {
                 LogoutUserEndpoint logoutEndpoint = new LogoutUserEndpoint();
                 logoutEndpoint.HandleRequest(request, response);
@@ -100,7 +79,6 @@ namespace MonsterTradingCardGame.BL.HTTP {
                 response.ResponseText = "OK";
                 response.headers.Add("Content-Length", response.ResponseContent.Length.ToString());
                 response.headers.Add("Content-Type", "text/plain");
-                // TODO: Refactor response.ResponseContent
                 response.Process();
             }
         }

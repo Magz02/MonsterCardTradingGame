@@ -17,10 +17,6 @@ namespace MonsterTradingCardGame.BL.UM {
                 if (user.Username == null || user.Password == null) {
                     throw new Exception("One of the arguments is empty");
                 }
-                // TODO: hash password
-
-                // TODO: if adding new user returns fail, throw exception
-                // TODO: add user via DAL - new class with an interface
 
                 IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
                 connection.Open();
