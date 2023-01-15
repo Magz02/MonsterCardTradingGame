@@ -64,6 +64,19 @@ namespace MonsterTradingCardGame.BL.BM {
                 int num = rnd.Next() % allUsersExceptUser.Count;
 
                 User opponent = allUsersExceptUser[num];
+                while (!hasCards(opponent, connection, logger)) {
+                    allUsersExceptUser.RemoveAt(num);
+                    if (allUsersExceptUser.Count <= 0) {
+                        break;
+                    }
+                    num = rnd.Next() % allUsersExceptUser.Count;
+                    opponent = allUsersExceptUser[num];
+                }
+
+                if (allUsersExceptUser.Count == 0) {
+                    throw new Exception("No users with cards found");
+                }
+                
                 logger.Log($"Opponent for battle chosen: {opponent.Id} - {opponent.Username}. Coins: {opponent.Coins}. Elo: {opponent.Elo}");
 
                 List<Card> userDeck = new();
@@ -121,7 +134,6 @@ namespace MonsterTradingCardGame.BL.BM {
                 updateStats(opponent.Username, opponentWins, opponentLosses, connection, logger);
 
                 // final steps
-                connection.Close();
 
                 string finalWinner = userWins > opponentWins ? user.Username : opponent.Username;
                 if (finalWinner == user.Username) {
@@ -129,6 +141,8 @@ namespace MonsterTradingCardGame.BL.BM {
                 } else {
                     eloUpdate(opponent, user, connection, logger);
                 }
+                
+                connection.Close();
                 
                 logger.Log(userWins > opponentWins ? $"Final winner: {finalWinner} with {userWins} wins." : $"Final winner: {finalWinner} with {opponentWins} wins.");
 
@@ -146,6 +160,27 @@ namespace MonsterTradingCardGame.BL.BM {
                 rs.ContentType = "text/plain";
                 rs.Process();
             }
+        }
+
+        private bool hasCards(User user, IDbConnection connection, Logger logger) {
+            bool response = false;
+            
+            IDbCommand command = connection.CreateCommand();
+            command.CommandText = @"select * from cards where owner_name = @owner_name";
+
+            var pOWNER = command.CreateParameter();
+            pOWNER.DbType = DbType.String;
+            pOWNER.ParameterName = "owner_name";
+            pOWNER.Value = user.Username;
+            command.Parameters.Add(pOWNER);
+
+            var reader = command.ExecuteReader();
+            while (reader.Read()) {
+                response = true;
+            }
+
+            reader.Close();
+            return response;
         }
 
         private void updateStats(string username, int wins, int losses, IDbConnection connection, Logger logger) {

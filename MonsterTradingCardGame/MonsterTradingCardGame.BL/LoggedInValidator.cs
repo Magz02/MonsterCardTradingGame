@@ -76,6 +76,8 @@ namespace MonsterTradingCardGame.BL {
                 i++;
             }
 
+            reader.Close();
+
             return i == 1 && name == "admin" ? true : false;
 
         }

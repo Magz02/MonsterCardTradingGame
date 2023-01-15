@@ -363,5 +363,91 @@ namespace MonsterTradingCardGame.Test {
             Assert.AreEqual(profile.Bio, bio);
             Assert.AreEqual(profile.Image, image);
         }
+        
+        // TEST 19
+        // Check if database works correctly - add to user table
+        [Test]
+        public void TestAddUserToDatabase() {
+            // Arrange
+            string username = "";
+            string password = "";
+
+            Hash hash = new Hash();
+            IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+            connection.Open();
+            User user = new User("JustTest", "JustPassword");
+            
+            IDbCommand command = connection.CreateCommand();
+            command.CommandText = @"
+                insert into users 
+                    (username, password, token, coins, elo, games, wins, losses) 
+                values
+                    (@username, @password, @token, @coins, @elo, @games, @wins, @losses)";
+
+            IDbCommand getCommand = connection.CreateCommand();
+            getCommand.CommandText = @"SELECT username, password FROM users WHERE username = @username";
+            
+            // Act
+            NpgsqlCommand c = command as NpgsqlCommand;
+            c.Parameters.AddWithValue("username", user.Username);
+            c.Parameters.AddWithValue("password", hash.HashValue(user.Password));
+            c.Parameters.AddWithValue("token", "");
+            c.Parameters.AddWithValue("coins", 20);
+            c.Parameters.AddWithValue("elo", 100);
+            c.Parameters.AddWithValue("games", 0);
+            c.Parameters.AddWithValue("wins", 0);
+            c.Parameters.AddWithValue("losses", 0);
+
+            c.Prepare();
+            command.ExecuteNonQuery();
+
+            var pUSERNAME = getCommand.CreateParameter();
+            pUSERNAME.DbType = DbType.String;
+            pUSERNAME.ParameterName = "username";
+            pUSERNAME.Value = user.Username;
+            getCommand.Parameters.Add(pUSERNAME);
+
+            var reader = getCommand.ExecuteReader();
+            while(reader.Read()) {
+                username = reader.GetString(0);
+                password = reader.GetString(1);
+            }
+
+            reader.Close();
+            connection.Close();
+
+            // Assert
+            Assert.AreEqual(username, user.Username);
+            Assert.AreEqual(password, hash.HashValue(user.Password));
+        }
+
+
+
+        // TEST 20
+        // Check if database works correctly - delete user from the table
+        [Test]
+        public void TestDeleteUserFromTest19() {
+            // Arrange
+            int rows = 0;
+
+            IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
+            connection.Open();
+
+            IDbCommand command = connection.CreateCommand();
+            command.CommandText = @"DELETE FROM users WHERE username = @username";
+
+            // Act
+            var pUSERNAME = command.CreateParameter();
+            pUSERNAME.DbType = DbType.String;
+            pUSERNAME.ParameterName = "username";
+            pUSERNAME.Value = "JustTest";
+            command.Parameters.Add(pUSERNAME);
+
+            rows = command.ExecuteNonQuery();
+
+            // Assert
+            Assert.That(rows == 1);
+        }
+        
     }
 }

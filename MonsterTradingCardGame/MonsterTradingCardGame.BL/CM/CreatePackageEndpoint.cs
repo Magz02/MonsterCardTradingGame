@@ -30,7 +30,6 @@ namespace MonsterTradingCardGame.BL.CM {
                 var cardsJson = JsonNode.Parse(rq.Content);
                 Console.WriteLine(cardsJson.ToString());
                 Console.WriteLine(cardsJson[0].ToString());
-                // maybe like this
                 Console.WriteLine(cardsJson[0]["Damage"]);
                 if (cardsJson[4] == null) {
                     throw new Exception("No valid cards package found");

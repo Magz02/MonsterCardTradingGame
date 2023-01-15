@@ -17,10 +17,6 @@ namespace MonsterTradingCardGame.BL.UM {
                 if (user.Username == null || user.Password == null) {
                     throw new Exception("One of the arguments is empty");
                 }
-                // TODO: hash password
-
-                // TODO: if adding new user returns fail, throw exception
-                // TODO: add user via DAL - new class with an interface
 
                 IDbConnection connection = new NpgsqlConnection("Host=localhost;Username=swe1user;Password=swe1pw;Database=swe1db");
                 connection.Open();
@@ -28,13 +24,14 @@ namespace MonsterTradingCardGame.BL.UM {
                 IDbCommand command = connection.CreateCommand();
                 command.CommandText = @"
                 insert into users 
-                    (username, password, coins, elo, games, wins, losses) 
+                    (username, password, token, coins, elo, games, wins, losses) 
                 values
-                    (@username, @password, @coins, @elo, @games, @wins, @losses)";
+                    (@username, @password, @token, @coins, @elo, @games, @wins, @losses)";
 
                 NpgsqlCommand c = command as NpgsqlCommand;
                 c.Parameters.AddWithValue("username", user.Username);
                 c.Parameters.AddWithValue("password", hash.HashValue(user.Password));
+                c.Parameters.AddWithValue("token", "");
                 c.Parameters.AddWithValue("coins", 20);
                 c.Parameters.AddWithValue("elo", 100);
                 c.Parameters.AddWithValue("games", 0);
