@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardGame", "MonsterTradingCardGame\MonsterTradingCardGame.csproj", "{1B1A3C2A-D9E9-471A-A0D5-8542DADDF6C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonsterTradingCardGame", "MonsterTradingCardGame\MonsterTradingCardGame.csproj", "{1B1A3C2A-D9E9-471A-A0D5-8542DADDF6C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardGame.BL", "MonsterTradingCardGame.BL\MonsterTradingCardGame.BL.csproj", "{7F28F2C3-79BB-4652-9578-3931645880E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonsterTradingCardGame.DAL", "MonsterTradingCardGame.DAL\MonsterTradingCardGame.DAL.csproj", "{4B6599A4-A4F8-483C-9E7B-4820A17EED84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardGame.DAL", "MonsterTradingCardGame.DAL\MonsterTradingCardGame.DAL.csproj", "{4B6599A4-A4F8-483C-9E7B-4820A17EED84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonsterTradingCardGame.Model", "MonsterTradingCardGame.Model\MonsterTradingCardGame.Model.csproj", "{CAFAFE4D-40F1-4103-9B74-8418A8A3CC58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardGame.Model", "MonsterTradingCardGame.Model\MonsterTradingCardGame.Model.csproj", "{CAFAFE4D-40F1-4103-9B74-8418A8A3CC58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonsterTradingCardGame.Test", "MonsterTradingCardGame.Test\MonsterTradingCardGame.Test.csproj", "{72BC4788-CD54-4E7C-AAAE-ABAA7190C3ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonsterTradingCardGame.BL", "MonsterTradingCardGame.BL\MonsterTradingCardGame.BL.csproj", "{83E9A630-0755-44A1-A4A8-75F48497B1ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +23,6 @@ Global
 		{1B1A3C2A-D9E9-471A-A0D5-8542DADDF6C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B1A3C2A-D9E9-471A-A0D5-8542DADDF6C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B1A3C2A-D9E9-471A-A0D5-8542DADDF6C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F28F2C3-79BB-4652-9578-3931645880E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F28F2C3-79BB-4652-9578-3931645880E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F28F2C3-79BB-4652-9578-3931645880E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F28F2C3-79BB-4652-9578-3931645880E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B6599A4-A4F8-483C-9E7B-4820A17EED84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B6599A4-A4F8-483C-9E7B-4820A17EED84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B6599A4-A4F8-483C-9E7B-4820A17EED84}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +31,14 @@ Global
 		{CAFAFE4D-40F1-4103-9B74-8418A8A3CC58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAFAFE4D-40F1-4103-9B74-8418A8A3CC58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAFAFE4D-40F1-4103-9B74-8418A8A3CC58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72BC4788-CD54-4E7C-AAAE-ABAA7190C3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72BC4788-CD54-4E7C-AAAE-ABAA7190C3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72BC4788-CD54-4E7C-AAAE-ABAA7190C3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72BC4788-CD54-4E7C-AAAE-ABAA7190C3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83E9A630-0755-44A1-A4A8-75F48497B1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E9A630-0755-44A1-A4A8-75F48497B1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E9A630-0755-44A1-A4A8-75F48497B1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E9A630-0755-44A1-A4A8-75F48497B1ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

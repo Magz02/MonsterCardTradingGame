@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "38/t8O1rrtHsDK69S6Jt2115EMAzXXqmMwvDm2VzgBfUzZdiO4i/bT1JUDT52yy3CEB12y/fMrJjT3YFq2T+nQ==",
+  "dgSpecHash": "E4E6BDcF5JBPb/Do+iEyly8H5otJoiSpEk5LSrhT5TJA8kL7bj4/1K5yEDZRsKyH4s7ahL6piuh86/5ENefgfA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ormak\\Documents\\GitHub\\MonsterCardTradingGame\\MonsterTradingCardGame\\MonsterTradingCardGame\\MonsterTradingCardGame.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\ormak\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\npgsql\\7.0.0\\npgsql.7.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\system.security.permissions\\7.0.0\\system.security.permissions.7.0.0.nupkg.sha512",
+    "C:\\Users\\ormak\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
